@@ -3,6 +3,7 @@ import Logo from '../bell/img/logo.png';
 class Hero extends React.Component {
   render() {
     return (
+    <section class="hero">
     <div class="container text-center">
       <div class="row">
         <div class="col-md-12">
@@ -23,6 +24,7 @@ class Hero extends React.Component {
         <a class="btn btn-full" href="#about">Get Started Now</a>
       </div>
     </div>
+    </section>
     )
   }
 }
