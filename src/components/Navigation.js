@@ -57,6 +57,7 @@ class Navigation extends React.Component {
       </div>
       <nav id="nav-menu-container">
         <ul class="nav-menu">
+          <NavItem path="/" name="Home" />
           <NavItem path="#about" name="About Us" />
           <NavItem path="#features" name="Features" />
           <NavItem path="#portfolio" name="Portfolio" />
@@ -67,6 +68,8 @@ class Navigation extends React.Component {
                 <div className="dropdown-divider"></div>
                 <a className="dropdown-item" href="/aaaction">Something else here</a>
               </NavDropdown>
+          <NavItem path="/login" name="Login" />
+          <NavItem path="/register" name="Register" />
           <NavItem path="#contact" name="Contact Us" />
         </ul>
       </nav>

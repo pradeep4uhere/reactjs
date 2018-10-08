@@ -1,28 +1,45 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Route from './Route';
+import { NavLink, Link } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
+import { Route } from 'react-router-dom'
 import * as serviceWorker from './serviceWorker';
-//import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import '../node_modules/font-awesome/css/font-awesome.min.css'; 
-import './bell/lib/bootstrap/css/bootstrap.min.css';
-import './bell/lib/font-awesome/css/font-awesome.min.css';
-import './bell/css/style.css';
-import App from './App';
-import jQuery from 'jquery'
-//import './bell/lib/jquery/jquery-migrate.min.js';
-//import './bell/lib/superfish/hoverIntent.js';
-//import './bell/lib/superfish/superfish.min.js';
-//import './bell/lib/tether/js/tether.min.js';
-//import './bell/lib/stellar/stellar.min.js';
-//import './bell/lib/bootstrap/js/bootstrap.bundle.min.js';
-//import './bell/lib/counterup/counterup.min.js';
-//import './bell/lib/waypoints/waypoints.min.js';
-//import './bell/lib/easing/easing.js';
-//import './bell/lib/stickyjs/sticky.js';
-//import './bell/lib/parallax/parallax.js';
-//import './bell/lib/lockfixed/lockfixed.min.js';
-//import './bell/js/custom.js';
+import Page from './App';
+import Login from './Pages/Login';
+import Register from './Pages/Register';
 import Loadable from 'react-loadable';
+import Navigation from './components/Navigation';
+import Footer from './components/Footer';
+
+
+const BaseLayout = () => (
+	<div>
+	<Navigation />
+    <Route path="/" exact component={HomePage} />
+	<Route path="/login" component={LoginPage} />
+	<Route path="/register" component={RegisterPage} />
+	<Route path="/me" component={ProfilePage} />
+	<Footer />
+	</div>
+)
+
+
+
+const HomePage = () => <Page/>
+const LoginPage = () => <div><Login/></div>
+const RegisterPage = () => <div><Register/></div>
+const ProfilePage = () => <div>This is the Profile Page</div>
+const AboutPage = () => <div>This is an About Page</div>
+const ContactPage = () => <div>This is a Contact Page</div>
+
+
+
+const App = () => (
+  <BrowserRouter>
+	<BaseLayout />
+    
+  </BrowserRouter>
+)
 ReactDOM.render(<App />, document.getElementById('root'));
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: http://bit.ly/CRA-PWA
