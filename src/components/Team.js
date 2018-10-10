@@ -11,7 +11,8 @@ class Team extends React.Component {
       <div class="row">
         <div class="col-sm-3 col-xs-6">
           <div class="card card-block">
-            <a href="#"><img alt="" class="team-img" src="img/team-1.jpg" />
+            <a href="#">
+              <img alt="" class="team-img" src='img/team-1.jpg'/>
               <div class="card-title-wrap">
                 <span class="card-title">Sergio Fez</span> <span class="card-text">Art Director</span>
               </div>

@@ -51,7 +51,7 @@ class Navigation extends React.Component {
     <header id="header">
     <div class="container">
 
-      <div id="logo" class="pull-left">
+      <div id="logo" className="pull-left">
         <a href="index.html">
         <img src="{LogoNavImg}" alt="" title="" /></a>
       </div>
@@ -68,6 +68,7 @@ class Navigation extends React.Component {
                 <div className="dropdown-divider"></div>
                 <a className="dropdown-item" href="/aaaction">Something else here</a>
               </NavDropdown>
+          <NavItem path="/blog" name="Blog" />
           <NavItem path="/login" name="Login" />
           <NavItem path="/register" name="Register" />
           <NavItem path="#contact" name="Contact Us" />
