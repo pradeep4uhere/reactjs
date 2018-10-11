@@ -14,31 +14,32 @@ class Register extends React.Component {
 
 	}
 
+	
 
 	handleSubmit(event) {
-		const urlStr = 'http://localhost/React/blog/api/api.php';
+		const urlStr = 'http://localhost/React/blog/api/api.php?action=register';
 		event.preventDefault();
+		const formData = {
+			first_name:event.target.first_name.value,
+			last_name:event.target.last_name.value,
+			email_address:event.target.email_address.value,
+			password:event.target.password.value,
+			cpassword:event.target.cpassword.value
+		}
 		let initialUsers = [];
-	    fetch(urlStr,{method:'POST'})
-	        .then(response => {
-	            return response.json();
-	        }).then(data => {
-		        initialUsers = data.results.map((values) => {
-	            return values
+		fetch(urlStr,{
+				method: 'POST',
+				body  :  JSON.stringify(formData),
+				mode  :  'no-cors'
+			}).then(response => {
+	        	console.log(response);
 	        });
-	        console.log('POST Method-',initialUsers);
-	        console.log('POST Method-',data);
-	        this.setState({
-	        	isLoading: false,
-	            userList: initialUsers,
-	        });
-	    });
 	}
 
 
 
 	componentDidMount() {
-		const urlStr = 'http://localhost/React/blog/api/api.php';
+		const urlStr = 'http://localhost/React/blog/api/api.php?action=getuser';
 	    let initialUsers = [];
 	    fetch(urlStr)
 	        .then(response => {
@@ -57,7 +58,6 @@ class Register extends React.Component {
 	    });
 	}
 
-
   render() {
     return ( 
      <div id="login">
@@ -72,7 +72,7 @@ class Register extends React.Component {
                             <h3 class="text-center text-info">Registration</h3>
                             <div class="form-group">
                                 <label for="username" class="text-info">First Name:</label><br />
-                                <input type="text" name="first_name" id="first_name" class="form-control" />
+                                <input type="text" name="first_name" id="first_name" class="form-control"  onChange={ this.changeValue } required />
                             </div>
                             <div class="form-group">
                                 <label for="username" class="text-info">Last Name:</label><br />
