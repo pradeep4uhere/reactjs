@@ -45,7 +45,7 @@ class Register extends React.Component {
 	        });
 		}
 
-		
+
 	componentDidMount() {
 		const urlStr = 'http://localhost/React/blog/api/api.php?action=getuser';
 	    let initialUsers = [];
@@ -92,19 +92,19 @@ class Register extends React.Component {
                             </div>
                             <div class="form-group">
                                 <label for="username" class="text-info">Last Name:</label><br />
-                                <input type="text" name="last_name" id="last_name" class="form-control" />
+                                <input type="text" name="last_name" id="last_name" class="form-control" required />
                             </div>
                             <div class="form-group">
                                 <label for="username" class="text-info">Email Address:</label><br />
-                                <input type="text" name="email_address" id="email_address" class="form-control" />
+                                <input type="text" name="email_address" id="email_address" class="form-control" required/>
                             </div>
                             <div class="form-group">
                                 <label for="password" class="text-info">Password:</label><br/>
-                                <input type="text" name="password" id="password" class="form-control" />
+                                <input type="text" name="password" id="password" class="form-control" required/>
                             </div>
                             <div class="form-group">
                                 <label for="password" class="text-info">Confirm Password:</label><br/>
-                                <input type="text" name="cpassword" id="cpassword" class="form-control" />
+                                <input type="text" name="cpassword" id="cpassword" class="form-control" required/>
                             </div>
                             <div class="form-group">
                                 <input type="submit" name="submit" class="btn btn-info btn-md" value="submit"/>

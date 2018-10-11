@@ -4,6 +4,7 @@ require_once('api.class.php');
 /**********************Define All the Url Here**********************/
 define('SERVER','http://127.0.0.1/blogServer/public/index.php/api/api/v1');
 define('REG_URL',SERVER.'/saveusers');
+define('LOGIN_URL',SERVER.'/login');
 /**********************Define All the Url Here**********************/
 
 header('Access-Control-Allow-Origin: *');
@@ -14,7 +15,24 @@ switch($action){
     case 'getuser': 
          echo $get_data = callAPI('GET', 'http://127.0.0.1/blogServer/public/index.php/api/api/v1/users', false); 
          break;
-    case 'register':
+    case 'login':
+        if(!empty($data)){
+          $postData=$data;
+          $apiObj = new apiService();
+          $api_url=LOGIN_URL;
+          $postFields=$postData;
+          $apiObj->setApiUrl($api_url);
+          $apiObj->setPostFields(json_decode($postData,true));
+          $result=$apiObj->curlExec();
+          $resultArr=json_decode($result,true);
+          echo json_encode($resultArr); die;
+        }else{
+                $res=array('message'=>'Parameter mising.','error'=>'error');
+          return $res;
+        }
+      break;
+
+      case 'register':
         if(!empty($data)){
           $postData=$data;
           $apiObj = new apiService();

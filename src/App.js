@@ -14,7 +14,6 @@ class App extends Component {
     return (
       <div>	
         <Hero />
-        
         <About />
         <Parallax />
         <Features />
