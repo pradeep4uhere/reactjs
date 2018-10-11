@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
 import {$,jQuery} from 'jquery';
 import UserList from './UserList.js';
+import { createBrowserHistory } from 'history'
+import { browserHistory } from 'react-router';
+import { Redirect,withRouter } from 'react-router-dom'
 var axios = require('axios')
 class Register extends React.Component {
 	constructor() {
 	    super();
 	    this.state = {
 	    	isLoading: true,
+	    	redirectToReferrer: false,
+	    	className: false,
 	        userList: [],
 	    };
 	    this.handleSubmit = this.handleSubmit.bind(this);
@@ -33,11 +38,14 @@ class Register extends React.Component {
 				mode  :  'no-cors'
 			}).then(response => {
 	        	console.log(response);
+	        	setTimeout(function(){
+	        		this.setState({ redirectToReferrer: true });
+		        }.bind(this),3000);  // wait 5 seconds, then reset to false
+	        	this.setState({ className: true });
 	        });
-	}
+		}
 
-
-
+		
 	componentDidMount() {
 		const urlStr = 'http://localhost/React/blog/api/api.php?action=getuser';
 	    let initialUsers = [];
@@ -59,8 +67,16 @@ class Register extends React.Component {
 	}
 
   render() {
+  	const { redirectToReferrer } = this.state;
+  	const { className } = this.state;
+  	if (redirectToReferrer) {
+    	return <Redirect to='/login' />;
+	}
     return ( 
      <div id="login">
+	     {className ? (
+    	    <div class="alert alert-success"><center>Thank you !! You will redirect to llgin page, please wait...</center></div>
+	      ) : (<div></div>)}
         <h3 class="text-center text-white pt-5">Login</h3>
         <div class="container">
 
@@ -96,11 +112,7 @@ class Register extends React.Component {
                         </form>
                     </div>
                 </div>
-                <div class="col-md-6">
                 
-                	<UserList state={this.state}/>
-               	
-         </div>
             </div>
         </div>
     </div>

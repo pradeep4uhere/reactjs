@@ -1,8 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { NavLink, Link } from 'react-router-dom'
-import { BrowserRouter } from 'react-router-dom'
-import { Route } from 'react-router-dom'
+import { BrowserRouter,Route,Redirect,withRouter } from 'react-router-dom'
 import * as serviceWorker from './serviceWorker';
 import Page from './App';
 import Login from './Pages/Login';
