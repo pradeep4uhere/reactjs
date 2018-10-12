@@ -4,7 +4,7 @@ import UserList from './UserList.js';
 import { createBrowserHistory } from 'history'
 import { browserHistory } from 'react-router';
 import { Redirect,withRouter } from 'react-router-dom'
-import axios from 'axios'
+var axios = require('axios')
 class Register extends React.Component {
 	constructor() {
 	    super();
@@ -13,34 +13,77 @@ class Register extends React.Component {
 	    	redirectToReferrer: false,
 	    	className: false,
 	        userList: [],
-	        initialUsers:[]
 	    };
+	    this.handleChange = this.handleChange.bind(this);
 	    this.handleSubmit = this.handleSubmit.bind(this);
 	    
 
 	}
 
+	handleChange(event) {
+	  //console.log(event.target.name);
+	  //const tagName = event.target.name
+      this.setState({
+      	 //   	tagName: event.target.value
+      })
+  	}
+
 	 handleSubmit(event) {
+		const urlStr = 'http://localhost/React/blog/api/api.php?action=register';
+		event.preventDefault();
+		const formData = {
+			first_name:event.target.first_name.value,
+			last_name:event.target.last_name.value,
+			email_address:event.target.email_address.value,
+			password:event.target.password.value,
+			cpassword:event.target.cpassword.value
+		}
 		let initialUsers = [];
-	 	event.preventDefault();
-	 	 axios.get('http://localhost/React/blog/api/api.php?action=getuser')
-          .then(data => {
-		        initialUsers = data.data.results.map((values) => {
+		fetch(urlStr,{
+				method: 'POST',
+				body  :  JSON.stringify(formData),
+				mode  :  'no-cors'
+			}).then(response => {
+	        	console.log('fROM handleSubmit',response);
+	        	setTimeout(function(){
+	        		this.setState({ redirectToReferrer: false });
+		        }.bind(this),3000);  // wait 5 seconds, then reset to false
+	        	this.setState({ className: true });
+	        });
+		}
+
+
+	componentDidMount() {
+		const urlStr = 'http://localhost/React/blog/api/api.php?action=getuser';
+	    let initialUsers = [];
+	    fetch(urlStr)
+	        .then(response => {
+	        	console.log('componentDidMount',response);
+	            return response.json();
+	        }).then(data => {
+		        initialUsers = data.results.map((values) => {
 	            return values
 	        });
-		    this.setState({
+	        console.log(initialUsers);
+	        console.log(data);
+
+	        this.setState({
 	        	isLoading: false,
 	            userList: initialUsers,
 	        });
 	    });
-	 }
-
-
+	}
 
   render() {
   	console.log(this.state);
   	const { redirectToReferrer } = this.state;
   	const { className } = this.state;
+  	//const { first_name } = this.state;
+  	//const { last_name } = this.state;
+  	//const { email_address } = this.state;
+  	//const { password } = this.state;
+  	//const { cpassword } = this.state;
+
 
   	if (redirectToReferrer) {
     	return <Redirect to='/login' />;
@@ -61,23 +104,23 @@ class Register extends React.Component {
                             <h3 class="text-center text-info">Registration</h3>
                             <div class="form-group">
                                 <label for="username" class="text-info">First Name:</label><br />
-                                <input type="text" name="first_name" id="first_name" class="form-control" value={this.state.first_name}   required />
+                                <input type="text" name="first_name" id="first_name" class="form-control" value={this.state.first_name}  onChange={this.handleChange} required />
                             </div>
                             <div class="form-group">
                                 <label for="username" class="text-info">Last Name:</label><br />
-                                <input type="text" name="last_name" id="last_name" class="form-control" required  value={this.state.last_name}/>
+                                <input type="text" name="last_name" id="last_name" class="form-control" required onChange={this.handleChange} value={this.state.last_name}/>
                             </div>
                             <div class="form-group">
                                 <label for="username" class="text-info">Email Address:</label><br />
-                                <input type="text" name="email_address" id="email_address" class="form-control" required  value={this.state.email_address}/>
+                                <input type="text" name="email_address" id="email_address" class="form-control" required onChange={this.handleChange} value={this.state.email_address}/>
                             </div>
                             <div class="form-group">
                                 <label for="password" class="text-info">Password:</label><br/>
-                                <input type="text" name="password" id="password" class="form-control" required  value={this.state.password}/>
+                                <input type="text" name="password" id="password" class="form-control" required onChange={this.handleChange} value={this.state.password}/>
                             </div>
                             <div class="form-group">
                                 <label for="password" class="text-info">Confirm Password:</label><br/>
-                                <input type="text" name="cpassword" id="cpassword" class="form-control" required  value={this.state.cpassword}/>
+                                <input type="text" name="cpassword" id="cpassword" class="form-control" required onChange={this.handleChange} value={this.state.cpassword}/>
                             </div>
                             <div class="form-group">
                                 <input type="submit" name="submit" class="btn btn-info btn-md" value="submit"/>
