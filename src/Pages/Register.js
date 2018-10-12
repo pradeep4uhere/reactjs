@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {$,jQuery} from 'jquery';
+import $ from 'jquery';
 import UserList from './UserList.js';
 import { createBrowserHistory } from 'history'
 import { browserHistory } from 'react-router';
@@ -9,7 +9,7 @@ class Register extends React.Component {
 	constructor() {
 	    super();
 	    this.state = {
-	    	isLoading: true,
+	    	isLoading: false,
 	    	redirectToReferrer: false,
 	    	className: false,
 	        userList: [],
@@ -20,19 +20,58 @@ class Register extends React.Component {
 
 	}
 
+
+
+
+
 	 handleSubmit(event) {
 		let initialUsers = [];
 	 	event.preventDefault();
-	 	 axios.get('http://localhost/React/blog/api/api.php?action=getuser')
-          .then(data => {
-		        initialUsers = data.data.results.map((values) => {
-	            return values
-	        });
-		    this.setState({
-	        	isLoading: false,
-	            userList: initialUsers,
-	        });
+	 	const formData = {
+			first_name:event.target.first_name.value,
+			last_name:event.target.last_name.value,
+			email_address:event.target.email_address.value,
+			password:event.target.password.value,
+			cpassword:event.target.cpassword.value
+		}
+
+
+		//Send Data To Server
+		$.ajax({
+	      url: 'http://localhost/React/blog/api/api.php?action=register',
+	      dataType: 'json',
+	      type: 'POST',
+	      data: formData,
+	      success: function(data) {
+	        console.log(data);
+	       
+	       	//Redirect to Login Page After Showing the Message  
+	        setTimeout(function(){
+	        		this.setState({ redirectToReferrer: true });
+		    }.bind(this),3000); 
+		    this.setState({ className: true });
+	      }.bind(this),
+	      error: function(xhr, status, err) {
+	        console.error(this.props.url, status, err.toString());
+	      }.bind(this)
 	    });
+
+		setTimeout(function(){
+		//Get User List with Update Data
+	  	    axios.get('http://localhost/React/blog/api/api.php?action=getuser')
+	          .then(data => {
+	          		console.log('After Respose POst:',data);
+				        initialUsers = data.data.results.map((values) => {
+			            return values
+			        });
+			        this.setState({
+		      			isLoading: false,
+		        		userList: initialUsers,
+	        		});
+		    }).catch(error => console.log(error));
+        }.bind(this),3000); 
+
+        
 	 }
 
 
@@ -41,6 +80,7 @@ class Register extends React.Component {
   	console.log(this.state);
   	const { redirectToReferrer } = this.state;
   	const { className } = this.state;
+  	const { isLoading } = this.state;
 
   	if (redirectToReferrer) {
     	return <Redirect to='/login' />;
@@ -85,13 +125,11 @@ class Register extends React.Component {
                         </form>
                     </div>
                 </div>
-                <div class="col-md-3">
-                <ul>
-        	        </ul>
-	           </div>
-	           <div class="col-md-3">
+               <div class="col-md-6">
+               {isLoading ? (
+	    	    <div class="alert alert-success"><center>please wait...</center></div>
+			      ) : (<div></div>)}
 	           <UserList state={this.state}/>
-                	
 	           </div>
                 
             </div>

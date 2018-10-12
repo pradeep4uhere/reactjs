@@ -12,6 +12,7 @@ class LeftSideBar extends React.Component{
                      <li><a href="#">My Post</a></li>
                      <li><a href="#">Photos(500)</a></li>
                      <li><a href="#">Comments(100)</a></li>
+                     <li><a href="/logout">Sign Out</a></li>    
                      </ul>
                     </div>
                 </div>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect,withRouter } from 'react-router-dom'
+import $ from 'jquery';
 var axios = require('axios')
 
 class Login extends React.Component {
@@ -8,6 +9,7 @@ class Login extends React.Component {
         this.state = {
             redirectToReferrer: false,
             className: false,
+            classNameError: false,
             user: []
         };
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -23,28 +25,46 @@ class Login extends React.Component {
             email_address:event.target.email_address.value,
             password:event.target.password.value
         }
-        fetch(urlStr,{
-                method: 'POST',
-                body  :  JSON.stringify(formData),
-                mode  :  'no-cors'
-            }).then(response => {
-                console.log(response);
+
+        $.ajax({
+          url: urlStr,
+          dataType: 'json',
+          type: 'POST',
+          data: formData,
+          success: function(data) {
+            console.log(data);
+            if(data.code==200){
+                console.log(data);
+                //Redirect to Login Page After Showing the Message  
                 setTimeout(function(){
+                    //Set All the values Of USer into Local Storage
+                    localStorage.setItem('user_id', data.user.id);
+                    localStorage.setItem('name', data.user.name);
+                    localStorage.setItem('email', data.user.email_address);
                     this.setState({ redirectToReferrer: true });
-                }.bind(this),2000);  // wait 5 seconds, then reset to false
-                this.setState({ className: true });
-            }).catch(e => console.log(e)); 
+                }.bind(this),1000); 
+                this.setState({ classNameError: false});
+                this.setState({ className: true});
+
+            }else{
+                this.setState({ classNameError: true });
+            }
+          }.bind(this),
+          error: function(xhr, status, err) {
+            console.error(this.props.url, status, err.toString());
+          }.bind(this)
+        });
     }
 
 
 
     componentDidMount() {
-        console.log('this.state.user');
     }
 
   render() {
     const { redirectToReferrer } = this.state;
     const { className } = this.state;
+    const { classNameError }  = this.state;
     if (redirectToReferrer) {
         return <Redirect to='/profile' />;
     }
@@ -52,6 +72,9 @@ class Login extends React.Component {
      <div id="login">
      {className ? (
             <div class="alert alert-success"><center>!! You LoggedIn     !!</center></div>
+          ) : (<div></div>)}
+     {classNameError ? (
+            <div class="alert alert-danger"><center>!! Invalid Credentials !!</center></div>
           ) : (<div></div>)}
         <h3 class="text-center text-white pt-5">Login form</h3>
         <div class="container">

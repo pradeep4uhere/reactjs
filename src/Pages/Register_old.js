@@ -56,7 +56,7 @@ class Register extends React.Component {
 	componentDidMount() {
 		const urlStr = 'http://localhost/React/blog/api/api.php?action=getuser';
 	    let initialUsers = [];
-	    fetch(urlStr)
+	    axios.get(urlStr)
 	        .then(response => {
 	        	console.log('componentDidMount',response);
 	            return response.json();
