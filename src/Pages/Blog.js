@@ -9,6 +9,7 @@ import axios from 'axios'
 import Loader from '../bullet-svg-animated.gif';
 import Pagination from "react-js-pagination";
 import Menu from './profile/Menu.js';
+import GuestMenu from './profile/GuestMenu.js';
 
 class Blog extends React.Component {
     constructor() {
@@ -16,12 +17,9 @@ class Blog extends React.Component {
         let initialPost = [];
         this.state = {
             isLoading: true,
-            isLoggedIn: true,
-            clicked: false,
-            post : true,
+            isLoggedIn: false,
             initialPost:[],
             postList: [],
-            activePage: 15
 
         };
         this.showPost = this.showPost.bind(this);
@@ -63,8 +61,7 @@ class Blog extends React.Component {
             <div class="container">
             <div id="login-row" class="row align-items-top">
                   <div class="col-md-3  alert alert-info" style={{padding: 2}}>
-                    <Menu/>
-                
+                    {isLoggedIn ? (<Menu/>) : (<GuestMenu/>)}
                 </div>
                 <div class="col-md-9">
                      {!isLoading ? (<PostList state={this.state}/>):(<center><h4><img src={Loader}/></h4></center>)}

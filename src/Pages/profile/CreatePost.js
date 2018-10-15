@@ -18,7 +18,7 @@ class CreatePost extends React.Component{
 
 
       prependData() {
-      	   this.displayData.unshift(<div class=" alert alert-success"><p><h4><b>{this.state.title}</b></h4></p><p></p><p class="text-justify">{this.state.disc}</p><small>Post Date: {new Date().toDateString()}</small><hr/></div>);
+      	   this.displayData.unshift(<div class=" alert alert-success"><p><h5><b>{this.state.title}</b></h5></p><p></p><p class="text-justify">{this.state.disc}</p><small>Post Date: {new Date().toDateString()}</small></div>);
 		   this.setState({
 		      showdata : this.displayData
 		   });
@@ -70,13 +70,10 @@ class CreatePost extends React.Component{
     	const  displayData = this.state;
         return(<div>
         	 <div  class=" alert alert-warning">
-	            	<br/>
-	            	<h3>Create New Post</h3>
-	            	<hr/>
+	            	<h4>Create New Post</h4>
 					<form onSubmit={this.handleSubmit} class="form">
-					<input type="text" name="posttitle" class="form-control" placeholder="Enter Title Here" maxlength={100}/>
-					<textarea  class="form-control" onChange={this.handleChange} cols={70} rows={3} name="description" placeholder="Enter description Here"/>
-					<br/>
+					<input type="text" name="posttitle" class="form-control" placeholder="Enter Title Here" maxlength={100} style={{marginBottom: 2}}/>
+					<textarea  class="form-control" onChange={this.handleChange} cols={70} rows={3} name="description" placeholder="Enter description Here" style={{marginBottom: 2}}/>
 					<button type="submit" class="btn btn-success btn-sm">Post</button>
 					</form>
 	            </div>
