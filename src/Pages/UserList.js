@@ -6,7 +6,7 @@ class UserList extends React.Component {
 
     render () {
         let isLoading = false;
-        let listArr = this.props.state.postList;
+        let listArr = this.props.state.userList;
         let optionItems = listArr.map((val) =>
                 <li key={val.id}>{val.first_name} | {val.last_name} | {val.email_address}</li>
             );

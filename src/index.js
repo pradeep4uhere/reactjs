@@ -14,7 +14,7 @@ import Loadable from 'react-loadable';
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
 import Logout from './Pages/Logout.js';
-
+import Blog from './Pages/Blog.js';
 
 
 const HomePage = () => <Page/>
@@ -24,6 +24,7 @@ const LogoutPage = () => <div><Logout/></div>
 const RegisterPage = () => <div><Register/></div>
 const AboutPage = () => <div>This is an About Page</div>
 const ContactPage = () => <div>This is a Contact Page</div>
+const BlogPage = () => <div><Blog/></div>
 
 const BaseLayout = () => (
     <div>
@@ -33,6 +34,7 @@ const BaseLayout = () => (
 	<Route path="/login" component={LoginPage} />
 	<Route path="/profile" component={ProfilePage} />
 	<Route path="/register" component={RegisterPage} />
+	<Route path="/blog" component={BlogPage} />
 	<Footer />
 	</div>
 	

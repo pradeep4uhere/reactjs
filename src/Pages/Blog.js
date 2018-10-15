@@ -1,46 +1,78 @@
-import React, { Component } from 'react';
-class Register extends React.Component {
-  render() {
+import React from 'react';
+import LeftSideBar from './profile/LeftSideBar.js';
+import Center from './profile/Center.js';
+import RightSideBar from './profile/RightSideBar.js';
+import CreatePost from './profile/CreatePost.js';
+import { Redirect,withRouter } from 'react-router-dom'
+import PostList from './PostList.js';
+import axios from 'axios'
+import Loader from '../bullet-svg-animated.gif';
+import Pagination from "react-js-pagination";
+import Menu from './profile/Menu.js';
+
+class Blog extends React.Component {
+    constructor() {
+        super();
+        let initialPost = [];
+        this.state = {
+            isLoading: true,
+            isLoggedIn: true,
+            clicked: false,
+            post : true,
+            initialPost:[],
+            postList: [],
+            activePage: 15
+
+        };
+        this.showPost = this.showPost.bind(this);
+    }
+
+    showPost(event){
+        event.preventDefault();
+        this.setState({ clicked : false,post : true });
+    }
+
+    componentDidMount() {
+        if(localStorage.getItem('user_id')){
+            this.setState({ isLoggedIn: true});    
+        }else{
+            this.setState({ isLoggedIn: false });    
+        }
+        setTimeout(function(){
+        //Get User List with Update Data
+            axios.get('http://localhost/React/blog/api/api.php?action=getuserpost')
+              .then(data => {
+                    console.log('After Respose Post:',data.data.post);
+                        this.initialPost = data.data.post.map((values) => {
+                        return values
+                    });
+                    this.setState({
+                        isLoading: false,
+                        postList: this.initialPost,
+                    });
+            }).catch(error => console.log(error));
+        }.bind(this),1000); 
+
+    }
+    render () {
+    const { isLoggedIn } = this.state;
+    const { isLoading } = this.state;
     return (
-     <div id="login">
-        <h3 class="text-center text-white pt-5">Login</h3>
-        <div class="container">
-            <div id="login-row" class="row justify-content-center align-items-center">
-                <div id="login-column" class="col-md-6">
-                    <div id="login-box" class="col-md-12">
-                        <form id="login-form" class="form" action="" method="post">
-                            <h3 class="text-center text-info">Registration</h3>
-                            <div class="form-group">
-                                <label for="username" class="text-info">First Name:</label><br />
-                                <input type="text" name="first_name" id="first_name" class="form-control" />
-                            </div>
-                            <div class="form-group">
-                                <label for="username" class="text-info">Last Name:</label><br />
-                                <input type="text" name="last_name" id="last_name" class="form-control" />
-                            </div>
-                            <div class="form-group">
-                                <label for="username" class="text-info">Email Address:</label><br />
-                                <input type="text" name="email_address" id="email_address" class="form-control" />
-                            </div>
-                            <div class="form-group">
-                                <label for="password" class="text-info">Password:</label><br/>
-                                <input type="text" name="password" id="password" class="form-control" />
-                            </div>
-                            <div class="form-group">
-                                <label for="password" class="text-info">Confirm Password:</label><br/>
-                                <input type="text" name="cpassword" id="cpassword" class="form-control" />
-                            </div>
-                            <div class="form-group">
-                                <input type="submit" name="submit" class="btn btn-info btn-md" value="submit"/>
-                            </div>
-                        </form>
-                    </div>
+        <div id="login">
+        <br/>
+            <div class="container">
+            <div id="login-row" class="row align-items-top">
+                  <div class="col-md-3  alert alert-info" style={{padding: 2}}>
+                    <Menu/>
+                
+                </div>
+                <div class="col-md-9">
+                     {!isLoading ? (<PostList state={this.state}/>):(<center><h4><img src={Loader}/></h4></center>)}
                 </div>
             </div>
         </div>
-    </div>
-    )
-  }
+        </div>
+        )
+    }
 }
-export default Register;
-
+export default Blog;

@@ -7,6 +7,11 @@ import { Redirect,withRouter } from 'react-router-dom'
 import PostList from './PostList.js';
 import axios from 'axios'
 import Loader from '../bullet-svg-animated.gif';
+import Pagination from "react-js-pagination";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.min.js';
+import 'font-awesome/css/font-awesome.min.css';
+import Menu from './profile/Menu.js';
 
 
 class Profile extends React.Component {
@@ -19,14 +24,18 @@ class Profile extends React.Component {
             clicked: false,
             post : true,
             initialPost:[],
-            postList: []
+            postList: [],
+            activePage: 15
 
         };
         this.handleClick = this.handleClick.bind(this);
         this.showPost = this.showPost.bind(this);
     }
 
-
+    handlePageChange(pageNumber) {
+        console.log(`active page is ${pageNumber}`);
+        this.setState({activePage: pageNumber});
+    }
 
     handleClick(event){
         this.setState({ clicked : true,post : false  });
@@ -69,21 +78,12 @@ class Profile extends React.Component {
     }
     return (
 
-        <div id="login">
+        <div id="logins">
         <br/>
             <div class="container">
-            <div id="login-row" class="row align-items-top">
-                  <div class="col-md-3  alert alert-primary">
-                     <hr/>
-                        Welcome, {localStorage.getItem('name')}
-                     <hr/>
-                     <ul class="no-list">
-                     <li><a href onClick={this.showPost}>My Posts</a></li>
-                     <li><a href="#">My Post</a></li>
-                     <li><a href="#">Photos(500)</a></li>
-                     <li><a href="#">Comments(100)</a></li>
-                     <li><a href="/logout">Sign Out</a></li>    
-                     </ul>
+            <div class="row align-items-top">
+                  <div class="col-md-3 alert alert-info"  style={{padding: 2}}>
+                    <Menu/>
 
                 </div>
                 <div class="col-md-9">

@@ -1,7 +1,15 @@
 import React from 'react';
+import InfiniteScroll from 'react-infinite-scroller';
+
 class PostList extends React.Component {
     constructor() {
         super();
+    }
+
+
+    handlePageChange(pageNumber) {
+        console.log('active page is ${pageNumber}');
+        this.setState({activePage: pageNumber});
     }
 
     render () {
@@ -19,8 +27,8 @@ class PostList extends React.Component {
             );
 
         return (
-        <div class="panel panel-default">
-          {optionItems}
+        <div class="panel panel-default fixHeight">
+            {optionItems}
         </div>
         )
     }
