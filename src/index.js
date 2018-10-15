@@ -26,16 +26,16 @@ const AboutPage = () => <div>This is an About Page</div>
 const ContactPage = () => <div>This is a Contact Page</div>
 
 const BaseLayout = () => (
-	<div>
+    <div>
 	<Route path="/logout" component={LogoutPage} />
 	<Navigation />
     <Route path="/" exact component={HomePage} />
 	<Route path="/login" component={LoginPage} />
 	<Route path="/profile" component={ProfilePage} />
 	<Route path="/register" component={RegisterPage} />
-	
 	<Footer />
 	</div>
+	
 )
 
 
@@ -45,7 +45,6 @@ const BaseLayout = () => (
 const App = () => (
   <BrowserRouter>
 	<BaseLayout />
-    
   </BrowserRouter>
 )
 ReactDOM.render(<App />, document.getElementById('root'));

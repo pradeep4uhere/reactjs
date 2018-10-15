@@ -6,6 +6,9 @@ define('SERVER','http://127.0.0.1/blogServer/public/index.php/api/api/v1');
 define('REG_URL',SERVER.'/saveusers');
 define('LOGIN_URL',SERVER.'/login');
 define('USERINFO_URL',SERVER.'/getuserinfo');
+define('NEWPOST_URL',SERVER.'/createpost');
+define('ALLPOST_URL',SERVER.'/getuserpost');
+
 /**********************Define All the Url Here**********************/
 
 header('Access-Control-Allow-Origin: *');
@@ -50,6 +53,24 @@ switch($action){
 
       break;
 
+
+      case 'getuserpost':
+            if(!empty($_REQUEST)){
+                $postData=$_REQUEST;
+                $apiObj = new apiService();
+                $api_url=ALLPOST_URL;
+                $apiObj->setApiUrl($api_url);
+                $apiObj->setPostFields($postData);
+                $result=$apiObj->curlExec();
+                $resultArr=json_decode($result,true);
+                echo json_encode($resultArr); die;
+              }else{
+                      $res=array('message'=>'Parameter mising.','error'=>'error');
+                return $res;
+              }
+
+      break;
+
       case 'register':
         if(!empty($data)){
           $postData=$_POST;
@@ -64,6 +85,24 @@ switch($action){
                 $res=array('message'=>'Parameter mising.','error'=>'error');
           return $res;
         }
+      break;
+
+
+      case 'newpost': 
+            if(!empty($data)){
+                $postData=$_POST;
+                $apiObj = new apiService();
+                $api_url=NEWPOST_URL;
+                $apiObj->setApiUrl($api_url);
+                $apiObj->setPostFields($postData);
+                $result=$apiObj->curlExec();
+                $resultArr=json_decode($result,true);
+                echo json_encode($resultArr); die;
+              }else{
+                      $res=array('message'=>'Parameter mising.','error'=>'error');
+                return $res;
+              }
+
       break;
   
     default:

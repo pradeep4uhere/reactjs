@@ -10,6 +10,7 @@ class Login extends React.Component {
             redirectToReferrer: false,
             className: false,
             classNameError: false,
+            isLoggedIn: false,
             user: []
         };
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -58,8 +59,41 @@ class Login extends React.Component {
 
 
 
-    componentDidMount() {
-    }
+
+
+
+  componentDidMount() {
+      const user_id = localStorage.getItem('user_id');
+      if(user_id){
+          const urlStr = 'http://localhost/React/blog/api/api.php?action=getuserinfo&id='+user_id;
+          $.ajax({
+          url: urlStr,
+          type: 'GET',
+          success: function(data) {
+          const res = JSON.parse(data);
+          if(res.code==200){
+            if(res.user.id>0){
+              localStorage.setItem('user_id', res.user.id);
+              localStorage.setItem('name', res.user.name);
+              localStorage.setItem('email', res.user.email_address);
+              this.setState({ redirectToReferrer: true});
+            }else{
+              this.setState({ redirectToReferrer: false});
+            }
+          }
+          //Redirect to Login Page After Showing the Message  
+          }.bind(this),
+          error: function(xhr, status, err) {
+            this.setState({ redirectToReferrer: false});
+            console.error(this.props.url, status, err.toString());
+          }.bind(this)
+        });
+
+        
+      }else{
+        this.setState({ redirectToReferrer: false});
+      }
+  }
 
   render() {
     const { redirectToReferrer } = this.state;

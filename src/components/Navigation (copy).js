@@ -67,6 +67,12 @@ class Navigation extends React.Component {
           <NavItem path="#features" name="Features" />
           <NavItem path="#portfolio" name="Portfolio" />
           <NavItem path="#team" name="Team" />
+              <NavDropdown name="Dropdown">
+                <a className="dropdown-item" href="/action">Action</a>
+                <a className="dropdown-item" href="/aaction">Another action</a>
+                <div className="dropdown-divider"></div>
+                <a className="dropdown-item" href="/aaaction">Something else here</a>
+              </NavDropdown>
           <NavItem path="/blog" name="Blog" />
           <NavItem path="/login" name="Login" />
           <NavItem path="/register" name="Register" />
