@@ -20,14 +20,25 @@ class Login extends React.Component {
     /**********Login Form Handle********************/
     handleSubmit(event) {
         let initialUsers = [];
-        const urlStr = 'http://localhost/React/blog/api/api.php?action=login';
+        const urlStr = 'http://localhost:4209/serverport/login';
         event.preventDefault();
         const formData = {
             email_address:event.target.email_address.value,
             password:event.target.password.value
         }
+        //Send Data to Node Server
+        axios.post(urlStr,formData)
+        .then(res =>this.setState({
+                     result:res.data,
+                     className: true
+                }),
+            setTimeout(function(){
+                console.log(res.data);
+        		this.setState({ redirectToReferrer: false });
+		    }.bind(this),3000) 
+         );
 
-        $.ajax({
+        /*$.ajax({
           url: urlStr,
           dataType: 'json',
           type: 'POST',
@@ -54,7 +65,7 @@ class Login extends React.Component {
           error: function(xhr, status, err) {
             console.error(this.props.url, status, err.toString());
           }.bind(this)
-        });
+        });*/
     }
 
 

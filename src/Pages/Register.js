@@ -4,7 +4,7 @@ import UserList from './UserList.js';
 import { createBrowserHistory } from 'history'
 import { browserHistory } from 'react-router';
 import { Redirect,withRouter } from 'react-router-dom'
-import axios from 'axios'
+const axios = require('axios');
 class Register extends React.Component {
 	constructor() {
 	    super();
@@ -16,15 +16,8 @@ class Register extends React.Component {
 	        initialUsers:[]
 	    };
 	    this.handleSubmit = this.handleSubmit.bind(this);
-	    
-
 	}
-
-
-
-
-
-	 handleSubmit(event) {
+    handleSubmit(event) {
 		let initialUsers = [];
 	 	event.preventDefault();
 	 	const formData = {
@@ -34,44 +27,16 @@ class Register extends React.Component {
 			password:event.target.password.value,
 			cpassword:event.target.cpassword.value
 		}
-
-
-		//Send Data To Server
-		$.ajax({
-	      url: 'http://localhost/React/blog/api/api.php?action=register',
-	      dataType: 'json',
-	      type: 'POST',
-	      data: formData,
-	      success: function(data) {
-	        console.log(data);
-	       
-	       	//Redirect to Login Page After Showing the Message  
-	        setTimeout(function(){
+        //Send Data to Node Server
+        axios.post('http://localhost:4209/serverport/register', formData)
+        .then(res =>this.setState({
+                result:res.data,
+                className: true
+                }),
+            setTimeout(function(){
 	        		this.setState({ redirectToReferrer: true });
-		    }.bind(this),3000); 
-		    this.setState({ className: true });
-	      }.bind(this),
-	      error: function(xhr, status, err) {
-	        console.error(this.props.url, status, err.toString());
-	      }.bind(this)
-	    });
-
-		setTimeout(function(){
-		//Get User List with Update Data
-	  	    axios.get('http://localhost/React/blog/api/api.php?action=getuser')
-	          .then(data => {
-	          		console.log('After Respose POst:',data);
-				        initialUsers = data.data.results.map((values) => {
-			            return values
-			        });
-			        this.setState({
-		      			isLoading: false,
-		        		userList: initialUsers,
-	        		});
-		    }).catch(error => console.log(error));
-        }.bind(this),3000); 
-
-        
+		    }.bind(this),3000) 
+         );
 	 }
 
 
