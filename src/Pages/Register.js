@@ -40,6 +40,12 @@ class Register extends React.Component {
 	 }
 
 
+  componentDidMount() { 
+    if(localStorage.getItem('user_id')){
+      this.setState({ redirectToReferrer: true });
+    }
+   }
+
 
   render() {
   	console.log(this.state);

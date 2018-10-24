@@ -48,17 +48,23 @@ class Profile extends React.Component {
     }
 
     componentDidMount() {
+        var userId= localStorage.getItem('user_id');
         if(localStorage.getItem('user_id')){
             this.setState({ isLoggedIn: true});    
         }else{
             this.setState({ isLoggedIn: false });    
         }
+        const urlStr = 'http://localhost:4209/serverport/getuserpost';
+        const formData = {
+            user_id:localStorage.getItem('user_id'),
+            token:localStorage.getItem('token')
+        }
         setTimeout(function(){
         //Get User List with Update Data
-            axios.get('http://localhost/React/blog/api/api.php?action=getuserpost')
+            axios.post(urlStr,formData)
               .then(data => {
-                    console.log('After Respose Post:',data.data.post);
-                        this.initialPost = data.data.post.map((values) => {
+                        console.log(data);
+                        this.initialPost = data.data.result.map((values) => {
                         return values
                     });
                     this.setState({

@@ -29,14 +29,35 @@ class CreatePost extends React.Component{
 
     handleSubmit(event){
     	 let initialUsers = [];
-    	 const urlStr = 'http://localhost/React/blog/api/api.php?action=newpost';
+    	 const urlStr = 'http://localhost:4209/serverport/add';
     	 event.preventDefault();
     	 const user_id =localStorage.getItem('user_id');
+       const token =localStorage.getItem('token');
         	const formData = {
             	title:event.target.posttitle.value,
             	description:event.target.description.value,
-            	user_id : user_id
+            	user_id : user_id,
+              token:
         	}
+
+
+        axios.post(urlStr,formData)
+            .then(data => {
+                    console.log(data);
+                    if(data.code==200){
+                      setTimeout(function(){
+                        this.setState({isPost:true});
+                        this.setState({title:formData.title});
+                        this.setState({disc:formData.description});
+                        this.prependData();
+                      }.bind(this),1000); 
+                    }else{
+                       //Error Not Post 
+                    }
+            }).catch(error => console.log(error));
+
+
+
        	$.ajax({
           url: urlStr,
           dataType: 'json',

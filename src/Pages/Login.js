@@ -11,7 +11,9 @@ class Login extends React.Component {
             className: false,
             classNameError: false,
             isLoggedIn: false,
-            user: []
+            user: [],
+            message:'',
+            classstr:''
         };
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -20,6 +22,7 @@ class Login extends React.Component {
     /**********Login Form Handle********************/
     handleSubmit(event) {
         let initialUsers = [];
+        var session;
         const urlStr = 'http://localhost:4209/serverport/login';
         event.preventDefault();
         const formData = {
@@ -27,100 +30,53 @@ class Login extends React.Component {
             password:event.target.password.value
         }
         //Send Data to Node Server
-        axios.post(urlStr,formData)
-        .then(res =>this.setState({
-                     result:res.data,
-                     className: true
-                }),
+        axios.post(urlStr, formData)
+        .then((response) => {
+          if(response.data.code==200) {
+            this.setState({message:response.data.message});
+            this.setState({classstr:'alert alert-success'});
+            this.setState({className:true});
             setTimeout(function(){
-                console.log(res.data);
-        		this.setState({ redirectToReferrer: false });
-		    }.bind(this),3000) 
-         );
-
-        /*$.ajax({
-          url: urlStr,
-          dataType: 'json',
-          type: 'POST',
-          data: formData,
-          success: function(data) {
-            console.log(data);
-            if(data.code==200){
-                console.log(data);
-                //Redirect to Login Page After Showing the Message  
-                setTimeout(function(){
-                    //Set All the values Of USer into Local Storage
-                    localStorage.setItem('user_id', data.user.id);
-                    localStorage.setItem('name', data.user.name);
-                    localStorage.setItem('email', data.user.email_address);
-                    this.setState({ redirectToReferrer: true });
-                }.bind(this),1000); 
-                this.setState({ classNameError: false});
-                this.setState({ className: true});
-
-            }else{
-                this.setState({ classNameError: true });
-            }
-          }.bind(this),
-          error: function(xhr, status, err) {
-            console.error(this.props.url, status, err.toString());
-          }.bind(this)
-        });*/
+                localStorage.setItem('user_id',response.data.res.user.id);
+                localStorage.setItem('token',response.data.res.token);
+                localStorage.setItem('name',response.data.res.user.first_name +" "+ response.data.res.user.last_name);
+                this.setState({ redirectToReferrer: true });
+              }.bind(this),3000)
+          }else{
+            this.setState({ redirectToReferrer: false });
+            this.setState({message:response.data.message});
+            this.setState({classstr:'alert alert-danger'});
+            console.log(this.state);
+          }
+        })
+        .catch((err) => {
+          console.log("Error: ", err);
+        })
     }
 
 
 
 
+  
 
-
-  componentDidMount() {
-      const user_id = localStorage.getItem('user_id');
-      if(user_id){
-          const urlStr = 'http://localhost/React/blog/api/api.php?action=getuserinfo&id='+user_id;
-          $.ajax({
-          url: urlStr,
-          type: 'GET',
-          success: function(data) {
-          const res = JSON.parse(data);
-          if(res.code==200){
-            if(res.user.id>0){
-              localStorage.setItem('user_id', res.user.id);
-              localStorage.setItem('name', res.user.name);
-              localStorage.setItem('email', res.user.email_address);
-              this.setState({ redirectToReferrer: true});
-            }else{
-              this.setState({ redirectToReferrer: false});
-            }
-          }
-          //Redirect to Login Page After Showing the Message  
-          }.bind(this),
-          error: function(xhr, status, err) {
-            this.setState({ redirectToReferrer: false});
-            console.error(this.props.url, status, err.toString());
-          }.bind(this)
-        });
-
-        
-      }else{
-        this.setState({ redirectToReferrer: false});
-      }
-  }
+  componentDidMount() { 
+    if(localStorage.getItem('user_id')){
+      this.setState({ redirectToReferrer: true });
+    }
+   }
 
   render() {
     const { redirectToReferrer } = this.state;
-    const { className } = this.state;
-    const { classNameError }  = this.state;
+    const { message } = this.state;
+    const { classstr } = this.state;
     if (redirectToReferrer) {
         return <Redirect to='/profile' />;
     }
     return (
      <div id="login">
-     {className ? (
-            <div class="alert alert-success"><center>!! You LoggedIn     !!</center></div>
-          ) : (<div></div>)}
-     {classNameError ? (
-            <div class="alert alert-danger"><center>!! Invalid Credentials !!</center></div>
-          ) : (<div></div>)}
+       <center>
+       {message ? (<div className={this.state.classstr}>{this.state.message}</div>) : (<div></div>)}
+        </center>
         <h3 class="text-center text-white pt-5">Login form</h3>
         <div class="container">
             <div id="login-row" class="row justify-content-center align-items-center">
@@ -134,7 +90,7 @@ class Login extends React.Component {
                             </div>
                             <div class="form-group">
                                 <label for="password" class="text-info">Password:</label><br/>
-                                <input type="text" name="password" id="password" class="form-control" />
+                                <input type="password" name="password" id="password" class="form-control" />
                             </div>
                             <div class="form-group">
                                 <label for="remember-me" class="text-info"><span>Remember me, </span> <span>

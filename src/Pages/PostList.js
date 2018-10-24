@@ -22,7 +22,7 @@ class PostList extends React.Component {
                 <p class="text-justify">{val.description}</p>
                 <div>
                     <small style={{float: 'left'}}>Post Date: {val.created_at}</small>
-                    <small style={{float: 'right'}}>By: {val.user.first_name}</small>
+                    <small style={{float: 'right'}}>By: {val.first_name}</small>
                 </div>
                 <hr/>
                 </div>
