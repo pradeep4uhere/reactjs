@@ -4,6 +4,10 @@ const ServerPortRouter = express.Router();
 var db = require('../database/db');
 var md5 = require('md5');
 var sha1 = require('sha1');
+var formidable = require('formidable');
+var fs = require('fs');
+var appRoot = require('app-root-path');
+const request = require('request');
 var config = {
                salt_1:'pradeep3300!@#$'
             };
@@ -13,8 +17,81 @@ var sess = {
 }
 
 // Use the session middleware
+ServerPortRouter.route('/uploadimage').post(function (req, res) {
+  console.log(form);
+});
+
+
+ServerPortRouter.route('/addcategory').post(function (req, res) {
+  var title = req.body.title;
+  var user_id = req.body.user_id;
+  var token = req.body.token;
+
+  // Connect to MySQL on start
+  db.connection.getConnection(function(err,connection){
+    if (err) {
+      res.json({"code" : 100, "status" : "Error in connection database"});
+      return;
+    }   
+    console.log('You are now connected... id ' + connection.threadId);
+    var sql = "INSERT INTO category (title) VALUES ?";
+    var values = [[title]];
+    connection.query(sql, [values], function(error, results) {
+          if (error) throw res.json(error);
+            res.json({status:'success',message:'Category added Successfully',code:'200'});
+          })
+    connection.on('error', function(err) {      
+          res.json({"code" : 100, "status" : "Error in connection database"});
+          return;     
+    });
+  });
+});
+
+
+ServerPortRouter.route('/getcategory').post(function (req, res) {
+  var user_id      = req.body.user_id;
+  var token       = req.body.token;
+  if(sha1(config.salt_1 + user_id)==token){
+    db.connection.getConnection(function(err,connection){
+        //Database Not Connected If there is any error  
+        if (err) {
+          console.log("Database is not connected");
+          res.json({"code" : 100, "status" : "Error in connection database"});
+          return;
+        }   
+        //Database Connected Now
+        console.log('You are now connected... id ' + connection.threadId);
+        var sql = "SELECT c.* from category c order by c.id DESC";
+          connection.query(sql,function(error, rows,fields) {
+              if (error) throw res.json(error)
+                numRows = rows.length;
+                if(numRows==0){
+                  return res.json({status:'error',message:'!! No Records Found !!',code:'500',token:token});
+                }else{
+                  return res.json({status:'success',message:'',code:'200',result:rows,token:token});
+              }
+            })
+          //Any Server Side Issues
+          connection.on('error', function(err) {      
+              res.json({"code" : 100, "status" : "Error in connection database"});
+              return;     
+            });
+      });
+
+
+
+  }else{
+    res.json({"status":"error","code" : 500, "message" : "Invalid Token Request"});
+  }
+
+    
+});
+
+
+
+
+
 ServerPortRouter.route('/add').post(function (req, res) {
-  var name = req.body.name;
   var description = req.body.description;
   var user_id = req.body.user_id;
   var token = req.body.token;
@@ -26,8 +103,8 @@ ServerPortRouter.route('/add').post(function (req, res) {
       return;
     }   
     console.log('You are now connected... id ' + connection.threadId);
-    var sql = "INSERT INTO posts (title, description, user_id) VALUES ?";
-    var values = [[name, description,user_id]];
+    var sql = "INSERT INTO posts (description, user_id) VALUES ?";
+    var values = [[description,user_id]];
     connection.query(sql, [values], function(error, results) {
           if (error) throw res.json(error);
             res.json({status:'success',message:'Post added Successfully',code:'200'});
@@ -38,6 +115,8 @@ ServerPortRouter.route('/add').post(function (req, res) {
     });
   });
 });
+
+
 
 ServerPortRouter.route('/').get(function (req, res) {
     
@@ -60,14 +139,14 @@ ServerPortRouter.route('/getuserpost').post(function (req, res) {
         }   
         //Database Connected Now
         console.log('You are now connected... id ' + connection.threadId);
-        var sql = "SELECT u.first_name,u.last_name,p.* from posts p JOIN users u on p.user_id=u.id";
+        var sql = "SELECT u.first_name,u.last_name,p.* from posts p JOIN users u on p.user_id=u.id order by p.id DESC";
           connection.query(sql,function(error, rows,fields) {
               if (error) throw res.json(error)
                 numRows = rows.length;
                 if(numRows==0){
-                  return res.json({status:'error',message:'!! No Records Found !!',code:'500'});
+                  return res.json({status:'error',message:'!! No Records Found !!',code:'500',token:token});
                 }else{
-                  return res.json({status:'success',message:'User Logged Successfully',code:'200',result:rows});
+                  return res.json({status:'success',message:'User Logged Successfully',code:'200',result:rows,token:token});
               }
             })
           //Any Server Side Issues

@@ -1,8 +1,21 @@
+/*
+ *@Author : Pradeep Kumar
+ *@Description: Import Center Section, for add new Post
+ *@Created Date: 25-10-2018
+ */
 import React from 'react';
 import LeftSideBar from './profile/LeftSideBar.js';
 import Center from './profile/Center.js';
 import RightSideBar from './profile/RightSideBar.js';
-import CreatePost from './profile/CreatePost.js';
+
+/*
+ *@Description: Import Center Section, for add new Post
+ */
+import CreatePost from './profile/AddPost.js';
+
+
+
+
 import { Redirect,withRouter } from 'react-router-dom'
 import PostList from './PostList.js';
 import axios from 'axios'
@@ -12,6 +25,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
 import 'font-awesome/css/font-awesome.min.css';
 import Menu from './profile/Menu.js';
+import FadeIn from 'react-fade-in';
+
 
 
 class Profile extends React.Component {
@@ -95,7 +110,9 @@ class Profile extends React.Component {
                 <div class="col-md-9">
                     <CreatePost/>
                     <br/>
-                     {!isLoading ? (<PostList state={this.state}/>):(<center><h4><img src={Loader}/></h4></center>)}
+                    
+                     {!isLoading ? (<FadeIn><PostList state={this.state}/></FadeIn>):(<center><h4><img src={Loader}/></h4></center>)}
+
                 </div>
             </div>
         </div>

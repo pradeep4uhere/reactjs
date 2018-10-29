@@ -28,7 +28,7 @@ class Menu extends React.Component{
                   <span className="badge badge-primary badge-pill">500</span>
                 </li>
                 <li className="list-group-item d-flex justify-content-between align-items-center">
-                  <a href="/setting">Profile Setting</a>
+                  <a href="/dashboard">Admin</a>
                 </li>
                 <li className="list-group-item d-flex justify-content-between align-items-center">
                   <a href="/logout">Sign Out</a>

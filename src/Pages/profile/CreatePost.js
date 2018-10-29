@@ -1,5 +1,7 @@
 import React from 'react';
 import $ from 'jquery';
+import axios from 'axios'
+
 class CreatePost extends React.Component{
 	constructor() {
         super();
@@ -37,7 +39,7 @@ class CreatePost extends React.Component{
             	title:event.target.posttitle.value,
             	description:event.target.description.value,
             	user_id : user_id,
-              token:
+              token:''
         	}
 
 

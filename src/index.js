@@ -15,6 +15,7 @@ import Navigation from './components/Navigation';
 import Footer from './components/Footer';
 import Logout from './Pages/Logout.js';
 import Blog from './Pages/Blog.js';
+import Dashboard from './Pages/Dashboard.js';
 
 
 const HomePage = () => <Page/>
@@ -22,12 +23,12 @@ const ProfilePage = () =><div><Profile/></div>
 const LoginPage = () => <div><Login/></div>
 const LogoutPage = () => <div><Logout/></div>
 const RegisterPage = () => <div><Register/></div>
-const AboutPage = () => <div>This is an About Page</div>
-const ContactPage = () => <div>This is a Contact Page</div>
 const BlogPage = () => <div><Blog/></div>
+const DashboardPage = () => <div><Dashboard/></div>
+
 
 const BaseLayout = () => (
-    <div>
+<div>
 	<Route path="/logout" component={LogoutPage} />
 	<Navigation />
     <Route path="/" exact component={HomePage} />
@@ -35,9 +36,9 @@ const BaseLayout = () => (
 	<Route path="/profile" component={ProfilePage} />
 	<Route path="/register" component={RegisterPage} />
 	<Route path="/blog" component={BlogPage} />
+	<Route path="/dashboard" component={DashboardPage} />
 	<Footer />
-	</div>
-	
+</div>
 )
 
 
