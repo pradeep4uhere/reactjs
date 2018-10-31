@@ -6,7 +6,7 @@ import 'bootstrap/dist/js/bootstrap.min.js';
 import 'font-awesome/css/font-awesome.min.css';
 import AddAtricle from './AddAtricle.js';
 import AddCategory from './AddCategory.js';
-import AddTags from './AddTags.js';
+import AddTags from './Tags.js';
 import Blank from './Blank.js';
 class LeftMenu extends React.Component{
   constructor() {

@@ -5,13 +5,13 @@ import Loader from '../../bullet-svg-animated.gif';
 import FadeIn from 'react-fade-in';
 import SweetAlert from 'sweetalert-react';
 import 'sweetalert/dist/sweetalert.css';
-import CatList from '../CatList.js';
-class AddCategory extends React.Component{
+import TagList from '../TagList.js';
+class AddTag extends React.Component{
 	constructor() {
         super();
-        this.addCategoryUrl= 'http://localhost:4209/serverport/addcategory';
-        this.getCategoryUrl= 'http://localhost:4209/serverport/getcategory';
-        this.delCategoryUrl='http://localhost:4209/serverport/delcategory';
+        this.addTagUrl= 'http://localhost:4209/serverport/addtag';
+        this.getTagUrl= 'http://localhost:4209/serverport/gettag';
+        this.delTagUrl='http://localhost:4209/serverport/deltag';
         let  initialCatList = [];
         this.state = {
         	show:false,
@@ -19,12 +19,12 @@ class AddCategory extends React.Component{
         	title:'',
         	active:'',
         	loading:true,
-        	catList: [],
+        	tagList: [],
         	id:null
         };
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.updateCategory = this.updateCategory.bind(this);
-        this.deleteCategory = this.deleteCategory.bind(this);
+        this.updateTag = this.updateTag.bind(this);
+        this.deleteTag = this.deleteTag.bind(this);
         
     }
 
@@ -42,7 +42,7 @@ class AddCategory extends React.Component{
 	       	}
 	    formData.id = this.state.id;
 	    if(formData.title.length>3){   	
-		    axios.post(this.addCategoryUrl,formData)
+		    axios.post(this.addTagUrl,formData)
 		    .then(data => {
 		            if(data.data.code==200){
 		              setTimeout(function(){
@@ -63,7 +63,7 @@ class AddCategory extends React.Component{
 			this.setState({
               	show:true,
                	title:'Error',
-               	message:'Please Enter Category Title First'
+               	message:'Please Enter Tag Title First'
             });
 		}
 
@@ -75,7 +75,7 @@ class AddCategory extends React.Component{
 	            	user_id : user_id,
 	                token:localStorage.getItem('token')
 	       	}
-		 axios.post(this.getCategoryUrl,formData)
+		 axios.post(this.getTagUrl,formData)
 	    .then(data => {
 	            if(data.data.code==200){
                 this.initialCatList = data.data.result.map((values) => {
@@ -97,23 +97,23 @@ class AddCategory extends React.Component{
 
 	}
 
-	updateCategory(i,t,s,type){
+	updateTag(i,t,s,type){
 		if(type=='e'){
 			this.setState({id:i});
 			this.setState({title:t});
 			this.setState({active:s});
 		}else{
-			this.deleteCategory(i,t);
+			this.deleteTag(i,t);
 		}
 	}
 
-	deleteCategory(i,t){
+	deleteTag(i,t){
     	const formData = {
 	   		id : i,
 	   		token:localStorage.getItem('token')
    		}
    		
-   		axios.post(this.delCategoryUrl,formData)
+   		axios.post(this.delTagUrl,formData)
 		    .then(data => {
 		            if(data.data.code==200){
 		              setTimeout(function(){
@@ -152,12 +152,12 @@ class AddCategory extends React.Component{
 	      	<div className="row" style={{'font-size':'12px'}}>
 	      	<div className="col-md-4">
         	<div className="card" style={{'marginTop':10}}>
-        	<div className="card-header">Add New Category</div>
+        	<div className="card-header">Add New Tag</div>
         	<div class="card-body" style={{'font-size':'12px'}}>
             <form onSubmit={this.handleSubmit} className="form" style={{'margin':5}} ref={(el) => this.myFormRef = el}>
             <div class="form-group">
-            <label>Enter Category Name</label>
-			<input type="text" name="title" class="form-control" placeholder="Enter Category Title Here" maxlength={100} style={{marginBottom: 2}} 
+            <label>Enter Tag Name</label>
+			<input type="text" name="title" class="form-control" placeholder="Enter Tag Title Here" maxlength={100} style={{marginBottom: 2}} 
 			ref="title" value={title}/>
 			</div>
 			<div class="form-group">
@@ -183,11 +183,11 @@ class AddCategory extends React.Component{
         		<div className="col-md-4 pull-right">Action</div>
         	</div>
         	</div>
-        	{!isLoading?(<FadeIn><CatList onClick={this.updateCategory} state={this.state}/></FadeIn>):(<center><div className='alert alert-danger'>No Record Found</div></center>)}
+        	{!isLoading?(<FadeIn><CatList onClick={this.updateTag} state={this.state}/></FadeIn>):(<center><div className='alert alert-danger'>No Record Found</div></center>)}
             </div>
             </div>
         	</div>
             </div>);
     }
 }
-export default AddCategory;
+export default AddTag;

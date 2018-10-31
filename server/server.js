@@ -5,10 +5,7 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var morgan = require('morgan');
 var corsPrefetch = require('cors-prefetch-middleware');
-var imagesUpload = require('images-upload-middleware');
-
 const app = express();
-
 app.use(cookieSession({
   name: 'sessionBlog',
   keys: 'pradeep-new-app',

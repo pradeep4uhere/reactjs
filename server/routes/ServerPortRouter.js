@@ -1,5 +1,4 @@
 const express = require('express');
-const app = express();
 const ServerPortRouter = express.Router();
 var db = require('../database/db');
 var md5 = require('md5');
@@ -15,18 +14,29 @@ var sess = {
       token: '',
       user: {}
 }
-
 // Use the session middleware
-ServerPortRouter.route('/uploadimage').post(function (req, res) {
-  console.log(form);
+path = require('path'),
+multer = require('multer'),
+bodyParser = require('body-parser'),
+
+ServerPortRouter.route('/uploadimage').post(function (req,res) {
+    var files = req.files;
+    if (Array.isArray(files)) {
+         console.log(files);
+        // response with multiple files (old form may send multiple files)
+        console.log("Got " + files.length + " files");
+    }
+    else {
+        // dropzone will send multiple requests per default
+        console.log("Got one file");
+    }
+    res.sendStatus(200);
 });
 
 
-ServerPortRouter.route('/addcategory').post(function (req, res) {
-  var title = req.body.title;
-  var user_id = req.body.user_id;
+ServerPortRouter.route('/deltag').post(function (req, res) {
+  var id = req.body.id;
   var token = req.body.token;
-
   // Connect to MySQL on start
   db.connection.getConnection(function(err,connection){
     if (err) {
@@ -34,14 +44,132 @@ ServerPortRouter.route('/addcategory').post(function (req, res) {
       return;
     }   
     console.log('You are now connected... id ' + connection.threadId);
-    var sql = "INSERT INTO category (title) VALUES ?";
-    var values = [[title]];
-    connection.query(sql, [values], function(error, results) {
-          if (error) throw res.json(error);
-            res.json({status:'success',message:'Category added Successfully',code:'200'});
-          })
-    connection.on('error', function(err) {      
-          res.json({"code" : 100, "status" : "Error in connection database"});
+    if(id>0){
+      var sql = 'DELETE FROM `tags` WHERE id = '+id;
+      connection.query(sql, function(error, results) {
+        if (error) throw res.json(error);
+          res.json({status:'success',message:msg,code:'200'});
+      })
+      var msg ='Tags updated Successfully';
+
+    }
+    connection.on('error', function(err) {   
+          console.log("[mysql error]",err);   
+          res.json({"code" : 100, "status" : err});
+          return;     
+    });
+  });
+});
+
+
+ServerPortRouter.route('/addtag').post(function (req, res) {
+  var title = req.body.title;
+  var status = req.body.status;
+  var user_id = req.body.user_id;
+  var token = req.body.token;
+  var id = req.body.id;
+  // Connect to MySQL on start
+  db.connection.getConnection(function(err,connection){
+    if (err) {
+      res.json({"code" : 100, "status" : "Error in connection database"});
+      return;
+    }   
+    console.log('You are now connected... id ' + connection.threadId);
+    if(id>0){
+
+      var sql = "UPDATE tags SET title = ?,status = ? where id = ?";
+      var values  = [title, status,id];
+      connection.query(sql, values, function(error, results) {
+        if (error) throw res.json(error);
+          res.json({status:'success',message:msg,code:'200'});
+      })
+      var msg ='Tags updated Successfully';
+
+    }else{
+
+      var sql = "INSERT INTO tags (title,status) VALUES ?";
+      var values = [[title,status]];
+      connection.query(sql, [values], function(error, results) {
+        if (error) throw res.json(error);
+          res.json({status:'success',message:msg,code:'200'});
+        })
+      var msg ='Tag added Successfully';
+    }
+
+    connection.on('error', function(err) {   
+          console.log("[mysql error]",err);   
+          res.json({"code" : 100, "status" : err});
+          return;     
+    });
+  });
+});
+
+
+ServerPortRouter.route('/delcategory').post(function (req, res) {
+  var id = req.body.id;
+  var token = req.body.token;
+  // Connect to MySQL on start
+  db.connection.getConnection(function(err,connection){
+    if (err) {
+      res.json({"code" : 100, "status" : "Error in connection database"});
+      return;
+    }   
+    console.log('You are now connected... id ' + connection.threadId);
+    if(id>0){
+      var sql = 'DELETE FROM `category` WHERE id = '+id;
+      connection.query(sql, function(error, results) {
+        if (error) throw res.json(error);
+          res.json({status:'success',message:msg,code:'200'});
+      })
+      var msg ='Category updated Successfully';
+
+    }
+    connection.on('error', function(err) {   
+          console.log("[mysql error]",err);   
+          res.json({"code" : 100, "status" : err});
+          return;     
+    });
+  });
+});
+
+
+ServerPortRouter.route('/addcategory').post(function (req, res) {
+  var title = req.body.title;
+  var status = req.body.status;
+  var user_id = req.body.user_id;
+  var token = req.body.token;
+  var id = req.body.id;
+  // Connect to MySQL on start
+  db.connection.getConnection(function(err,connection){
+    if (err) {
+      res.json({"code" : 100, "status" : "Error in connection database"});
+      return;
+    }   
+    console.log('You are now connected... id ' + connection.threadId);
+    if(id>0){
+
+      var sql = "UPDATE category SET title = ?,status = ? where id = ?";
+      var values  = [title, status,id];
+      connection.query(sql, values, function(error, results) {
+        if (error) throw res.json(error);
+          res.json({status:'success',message:msg,code:'200'});
+      })
+      var msg ='Category updated Successfully';
+
+    }else{
+
+      var sql = "INSERT INTO category (title,status) VALUES ?";
+      var values = [[title,status]];
+      connection.query(sql, [values], function(error, results) {
+        if (error) throw res.json(error);
+          res.json({status:'success',message:msg,code:'200'});
+        })
+      var msg ='Category added Successfully';
+    }
+
+    connection.on('error', function(err) {   
+          console.log("[mysql error]",err);   
+          res.json({"code" : 100, "status" : err});
           return;     
     });
   });
