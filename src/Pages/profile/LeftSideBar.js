@@ -1,3 +1,9 @@
+/*
+ * @PageName    :: LeftsideBar.js
+ * @Author      :: Pradeep Kumar
+ * @Description :: Left Menu of the profile
+ * @Created Date:: 20 Oct 2018
+ */
 import React from 'react';
 class LeftSideBar extends React.Component{
     constructor() {

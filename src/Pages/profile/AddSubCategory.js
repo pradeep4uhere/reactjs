@@ -1,8 +1,8 @@
 /*
- * @PageName    :: AddCategory.js
+ * @PageName    :: AddSubCategory.js
  * @Author      :: Pradeep Kumar
- * @Description :: Category module, Lisitng, Add Edit and Delete functionality
- * @Created Date:: 15 Oct 2018
+ * @Description :: SubCategory module, Lisitng, Add Edit and Delete functionality
+ * @Created Date:: 1 Nov 2018
  */
 import React from 'react';
 import $ from 'jquery';
@@ -11,16 +11,17 @@ import Loader from '../../bullet-svg-animated.gif';
 import FadeIn from 'react-fade-in';
 import SweetAlert from 'sweetalert-react';
 import 'sweetalert/dist/sweetalert.css';
-import CatList from '../CatList.js';
+import ItemList from '../ItemList.js';
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css' // Import css
 
-class AddCategory extends React.Component{
+class AddSubCategory extends React.Component{
 	constructor() {
         super();
-        this.addCategoryUrl= 'http://localhost:4209/category/addcategory';
-        this.getCategoryUrl= 'http://localhost:4209/category/getcategory';
-        this.delCategoryUrl='http://localhost:4209/category/delcategory';
+        this.addCategoryUrl= 'http://localhost:4209/serverport/addsubcategory';
+        this.getCategoryUrl= 'http://localhost:4209/serverport/getcategory';
+        this.getsubCategoryUrl= 'http://localhost:4209/serverport/getsubcategory';
+        this.delCategoryUrl='http://localhost:4209/serverport/delsubcategory';
         let  initialCatList = [];
         this.state = {
         	show:false,
@@ -28,7 +29,7 @@ class AddCategory extends React.Component{
         	title:'',
         	active:'',
         	loading:true,
-        	catList: [],
+        	ItemList: [],
         	id:null,
         	alertTitle:''
         };
@@ -96,7 +97,7 @@ class AddCategory extends React.Component{
 	            setTimeout(function(){
 	                this.setState({
 	                	loading:false,
-	                	catList:this.initialCatList,
+	                	itemList:this.initialCatList,
 	                });
 	                this.setState({loading:false});
 	              }.bind(this),1000); 
@@ -223,11 +224,11 @@ class AddCategory extends React.Component{
         		<div className="col-md-4 pull-right">Action</div>
         	</div>
         	</div>
-        	{(loading==false)?(<FadeIn><CatList onClick={this.updateCategory} state={this.state}/></FadeIn>):(<center><img src={Loader}/></center>)}
+        	{(loading==false)?(<FadeIn><ItemList onClick={this.updateCategory} state={this.state}/></FadeIn>):(<center><img src={Loader}/></center>)}
             </div>
             </div>
         	</div>
             </div>);
     }
 }
-export default AddCategory;
+export default AddSubCategory;

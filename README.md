@@ -31,13 +31,10 @@ CREATE TABLE `tags` (
 
 ALTER TABLE `tags`  ADD PRIMARY KEY (`id`);
 
---
 -- AUTO_INCREMENT for dumped tables
---
 
---
 -- AUTO_INCREMENT for table `category`
---
+
 ALTER TABLE `tags`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
@@ -46,9 +43,7 @@ ALTER TABLE `tags`
 
 #table Category
 
---
 -- Table structure for table `category`
---
 
 CREATE TABLE `category` (
   `id` int(11) NOT NULL,
@@ -57,14 +52,11 @@ CREATE TABLE `category` (
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
 -- Indexes for table `category`
---
+
 ALTER TABLE `category` ADD PRIMARY KEY (`id`);
 
---
 -- Table structure for table `users`
---
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
@@ -74,21 +66,16 @@ CREATE TABLE `users` (
   `password` varchar(225) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;ed tables
---
 
---
--- AUTO_INCREMENT for table `category`
---
-ALTER TABLE `category`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+ALTER TABLE `category`  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
+ALTER TABLE `category` ADD `parent_id` INT NULL AFTER `id`;
 
 
 
 #Table User
 
---
 -- Table structure for table `users`
---
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
@@ -100,23 +87,17 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
---
 -- Indexes for table `users`
---
 ALTER TABLE `users`  ADD PRIMARY KEY (`id`);
 
 
---
 -- AUTO_INCREMENT for table `users`
---
 ALTER TABLE `users`  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 
 #table Posts
 
---
 -- Table structure for table `posts`
---
 
 CREATE TABLE `posts` (
   `id` int(11) NOT NULL,
@@ -127,13 +108,7 @@ CREATE TABLE `posts` (
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Indexes for table `posts`
---
+
 ALTER TABLE `posts`  ADD PRIMARY KEY (`id`);
 
---
--- AUTO_INCREMENT for table `posts`
---
-ALTER TABLE `posts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+ALTER TABLE `posts`  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;

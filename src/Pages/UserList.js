@@ -1,3 +1,9 @@
+/*
+ * @PageName    :: UserList.js
+ * @Author      :: Pradeep Kumar
+ * @Description :: List Of Category
+ * @Created Date:: 30 Oct 2018
+ */
 import React from 'react';
 class UserList extends React.Component {
     constructor() {

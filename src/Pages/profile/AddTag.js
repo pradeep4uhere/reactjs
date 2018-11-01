@@ -1,3 +1,9 @@
+/*
+ * @PageName    :: AddTag.js
+ * @Author      :: Pradeep Kumar
+ * @Description :: Tag module, Lisitng, Add Edit and Delete functionality
+ * @Created Date:: 1 Nov 2018
+ */
 import React from 'react';
 import $ from 'jquery';
 import axios from 'axios'
@@ -12,9 +18,9 @@ import 'react-confirm-alert/src/react-confirm-alert.css' // Import css
 class AddTag extends React.Component{
 	constructor() {
         super();
-        this.addTagUrl= 'http://localhost:4209/serverport/addtag';
-        this.getTagUrl= 'http://localhost:4209/serverport/gettag';
-        this.delTagUrl='http://localhost:4209/serverport/deltag';
+        this.addTagUrl= 'http://localhost:4209/tag/addtag';
+        this.getTagUrl= 'http://localhost:4209/tag/gettag';
+        this.delTagUrl='http://localhost:4209/tag/deltag';
         let  initialTagList = [];
         this.state = {
         	show:false,

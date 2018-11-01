@@ -1,3 +1,9 @@
+/*
+ * @PageName    :: CatList.js
+ * @Author      :: Pradeep Kumar
+ * @Description :: List Of Category
+ * @Created Date:: 30 Oct 2018
+ */
 import React from 'react';
 
 class CatList extends React.Component {
