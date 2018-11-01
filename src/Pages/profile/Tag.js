@@ -6,13 +6,16 @@ import FadeIn from 'react-fade-in';
 import SweetAlert from 'sweetalert-react';
 import 'sweetalert/dist/sweetalert.css';
 import TagList from '../TagList.js';
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css' // Import css
+
 class AddTag extends React.Component{
 	constructor() {
         super();
         this.addTagUrl= 'http://localhost:4209/serverport/addtag';
         this.getTagUrl= 'http://localhost:4209/serverport/gettag';
         this.delTagUrl='http://localhost:4209/serverport/deltag';
-        let  initialCatList = [];
+        let  initialTagList = [];
         this.state = {
         	show:false,
         	message:'',
@@ -20,11 +23,13 @@ class AddTag extends React.Component{
         	active:'',
         	loading:true,
         	tagList: [],
+        	alertTitle:'',
         	id:null
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.updateTag = this.updateTag.bind(this);
         this.deleteTag = this.deleteTag.bind(this);
+        this.deleteNow = this.deleteNow.bind(this);
         
     }
 
@@ -48,8 +53,9 @@ class AddTag extends React.Component{
 		              setTimeout(function(){
 		                this.setState({
 		                	show:true,
-		                	title:'Success',
-		                	message:data.data.message
+		                	alertTitle:'Success',
+		                	message:data.data.message,
+		                	title:''
 		                });
 	                    this.myFormRef.reset();
 		                this.getList();	
@@ -78,21 +84,25 @@ class AddTag extends React.Component{
 		 axios.post(this.getTagUrl,formData)
 	    .then(data => {
 	            if(data.data.code==200){
-                this.initialCatList = data.data.result.map((values) => {
+                this.initialTagList = data.data.result.map((values) => {
                     return values
                 });
 	            setTimeout(function(){
+	            	this.setState({loading:false});
 	                this.setState({
 	                	loading:false,
-	                	catList:this.initialCatList,
+	                	tagList:this.initialTagList,
+
 	                });
 	              }.bind(this),1000); 
+  	              
 	            }
 	            console.log(this.state)
 	    }).catch(error => console.log(error));
 	}
 
 	componentDidMount(){
+		this.setState({loading:true});
 		this.getList();	
 
 	}
@@ -108,30 +118,53 @@ class AddTag extends React.Component{
 	}
 
 	deleteTag(i,t){
-    	const formData = {
+		 confirmAlert({
+	      title: ' Delete "'+t+'" ?',
+	      message: 'Are you sure to do this.',
+	      buttons: [
+	        {
+	          label: 'Yes',
+	          onClick: () => this.deleteNow(i)
+	        },
+	        {
+	          label: 'No',
+	          onClick: () => null
+	        }
+	      ]
+	    })
+    	
+	}
+
+	deleteNow(i){
+		const formData = {
 	   		id : i,
 	   		token:localStorage.getItem('token')
    		}
-   		
-   		axios.post(this.delTagUrl,formData)
-		    .then(data => {
-		            if(data.data.code==200){
-		              setTimeout(function(){
-		                this.setState({
-		                	show:true,
-		                	title:'Success',
-		                	message:data.data.message
-		                });
-	                    this.myFormRef.reset();
-		                this.getList();	
+		axios.post(this.delTagUrl,formData)
+	    .then(data => {
+	            if(data.data.code==200){
+	              setTimeout(function(){
+	                this.setState({
+	                	show:true,
+	                	alertTitle:'Success',
+	                	message:data.data.message
+	                });
+                    this.myFormRef.reset();
+                    this.setState({loading:true});
+	                this.getList();	
 
-		              }.bind(this),1000); 
-		            }else{
-		               //Error Not Post 
-		            }
-		    }).catch(error => console.log(error));
+	              }.bind(this),1000); 
+	            }else{
+	               //Error Not Post 
+	            }
+	    }).catch(error => console.log(error));
 	}
 
+
+	changeTitle(event){
+		var title = event.target.value;
+    	this.setState({ title: title });
+	}
 
 
 
@@ -140,12 +173,13 @@ class AddTag extends React.Component{
     render(){
     	const { message } = this.state;
     	const { title } = this.state;
+    	const { alertTitle } = this.state;
     	const { active } = this.state;
-     	const { isLoading } = this.state;
+     	const { loading } = this.state;
         return(<div>
         	<SweetAlert
 	        show={this.state.show}
-	        title={title}
+	        title={alertTitle}
 	        text={message}
 	        onConfirm={() => this.setState({ show: false })}
 	      />
@@ -158,7 +192,7 @@ class AddTag extends React.Component{
             <div class="form-group">
             <label>Enter Tag Name</label>
 			<input type="text" name="title" class="form-control" placeholder="Enter Tag Title Here" maxlength={100} style={{marginBottom: 2}} 
-			ref="title" value={title}/>
+			ref="title" onChange={this.changeTitle.bind(this)} value={title}/>
 			</div>
 			<div class="form-group">
 			<label>Status</label>
@@ -183,7 +217,7 @@ class AddTag extends React.Component{
         		<div className="col-md-4 pull-right">Action</div>
         	</div>
         	</div>
-        	{!isLoading?(<FadeIn><CatList onClick={this.updateTag} state={this.state}/></FadeIn>):(<center><div className='alert alert-danger'>No Record Found</div></center>)}
+        	{(loading==false)?(<FadeIn><TagList onClick={this.updateTag} state={this.state}/></FadeIn>):(<center><img src={Loader}/></center>)}
             </div>
             </div>
         	</div>

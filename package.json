@@ -44,6 +44,7 @@
     "proper": "^0.5.1",
     "react": "^16.5.2",
     "react-check-auth": "^0.2.0-alpha.2",
+    "react-confirm-alert": "^2.0.6",
     "react-dom": "^16.5.2",
     "react-dropzone": "^6.2.4",
     "react-fade-in": "^0.1.6",

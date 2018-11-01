@@ -32,12 +32,9 @@ class Dashboard extends React.Component {
         return <Redirect to='/login' />;
     }
     return (
-        <div id="logins">
-            <div class="container">
+            <div class="container" style={{'width':'100'}}>
                     <LeftMenu/>
              </div>
-        <br/>
-        </div>
         )
     }
 }

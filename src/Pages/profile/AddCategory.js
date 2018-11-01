@@ -6,6 +6,9 @@ import FadeIn from 'react-fade-in';
 import SweetAlert from 'sweetalert-react';
 import 'sweetalert/dist/sweetalert.css';
 import CatList from '../CatList.js';
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css' // Import css
+
 class AddCategory extends React.Component{
 	constructor() {
         super();
@@ -20,7 +23,8 @@ class AddCategory extends React.Component{
         	active:'',
         	loading:true,
         	catList: [],
-        	id:null
+        	id:null,
+        	alertTitle:''
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.updateCategory = this.updateCategory.bind(this);
@@ -48,10 +52,12 @@ class AddCategory extends React.Component{
 		              setTimeout(function(){
 		                this.setState({
 		                	show:true,
-		                	title:'Success',
+		                	alertTitle:'Success',
+		                	title:'',
 		                	message:data.data.message
 		                });
 	                    this.myFormRef.reset();
+	                    this.setState({loading:true});
 		                this.getList();	
 
 		              }.bind(this),1000); 
@@ -86,6 +92,7 @@ class AddCategory extends React.Component{
 	                	loading:false,
 	                	catList:this.initialCatList,
 	                });
+	                this.setState({loading:false});
 	              }.bind(this),1000); 
 	            }
 	            console.log(this.state)
@@ -103,16 +110,35 @@ class AddCategory extends React.Component{
 			this.setState({title:t});
 			this.setState({active:s});
 		}else{
+			this.setState({loading:true});
 			this.deleteCategory(i,t);
 		}
 	}
 
 	deleteCategory(i,t){
-    	const formData = {
+		confirmAlert({
+	      title: ' Delete "'+t+'" ?',
+	      message: 'Are you sure to do this.',
+	      buttons: [
+	        {
+	          label: 'Yes',
+	          onClick: () => this.deleteNow(i)
+	        },
+	        {
+	          label: 'No',
+	          onClick: () => null
+	        }
+	      ]
+	    })
+	}
+
+
+
+	deleteNow(i){
+		const formData = {
 	   		id : i,
 	   		token:localStorage.getItem('token')
    		}
-   		
    		axios.post(this.delCategoryUrl,formData)
 		    .then(data => {
 		            if(data.data.code==200){
@@ -134,31 +160,39 @@ class AddCategory extends React.Component{
 
 
 
+	changeTitle(event){
+		var title = event.target.value;
+    	this.setState({ title: title });
+	}
+
+
+
 
 
 
     render(){
     	const { message } = this.state;
+    	const { alertTitle } = this.state;
     	const { title } = this.state;
     	const { active } = this.state;
-     	const { isLoading } = this.state;
+     	const { loading } = this.state;
         return(<div>
         	<SweetAlert
 	        show={this.state.show}
-	        title={title}
+	        title={alertTitle}
 	        text={message}
 	        onConfirm={() => this.setState({ show: false })}
 	      />
 	      	<div className="row" style={{'font-size':'12px'}}>
 	      	<div className="col-md-4">
         	<div className="card" style={{'marginTop':10}}>
-        	<div className="card-header">Add New Category</div>
+        	<div className="card-header"><b>Add New Category</b></div>
         	<div class="card-body" style={{'font-size':'12px'}}>
             <form onSubmit={this.handleSubmit} className="form" style={{'margin':5}} ref={(el) => this.myFormRef = el}>
             <div class="form-group">
             <label>Enter Category Name</label>
 			<input type="text" name="title" class="form-control" placeholder="Enter Category Title Here" maxlength={100} style={{marginBottom: 2}} 
-			ref="title" value={title}/>
+			ref="title" onChange={this.changeTitle.bind(this)} value={title}/>
 			</div>
 			<div class="form-group">
 			<label>Status</label>
@@ -183,7 +217,7 @@ class AddCategory extends React.Component{
         		<div className="col-md-4 pull-right">Action</div>
         	</div>
         	</div>
-        	{!isLoading?(<FadeIn><CatList onClick={this.updateCategory} state={this.state}/></FadeIn>):(<center><div className='alert alert-danger'>No Record Found</div></center>)}
+        	{(loading==false)?(<FadeIn><CatList onClick={this.updateCategory} state={this.state}/></FadeIn>):(<center><img src={Loader}/></center>)}
             </div>
             </div>
         	</div>

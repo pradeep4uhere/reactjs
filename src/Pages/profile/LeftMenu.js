@@ -6,7 +6,7 @@ import 'bootstrap/dist/js/bootstrap.min.js';
 import 'font-awesome/css/font-awesome.min.css';
 import AddAtricle from './AddAtricle.js';
 import AddCategory from './AddCategory.js';
-import AddTags from './Tags.js';
+import AddTags from './Tag.js';
 import Blank from './Blank.js';
 class LeftMenu extends React.Component{
   constructor() {
@@ -62,10 +62,10 @@ class LeftMenu extends React.Component{
       const { blank } = this.state;
       return(
         <div class="row">
-                    <div class="col-md-3">  
+                    <div class="col-md-3" style={{'marginTop':10,'fontSize':13,'color':'#333'}}>  
                       <div class="card">
                         <ul class="list-group list-group">
-                          <li class="list-group-item"><i class="fa fa-key"></i><span>Setting</span></li>
+                          <li class="list-group-item"><i class="fa fa-key"></i><b>Setting</b></li>
                           <li class="list-group-item"><a href="#"  onClick={this.getBlockComponent.bind(this,'AddAtricle')}><i class="fa fa-compass"></i> <span><b>Add New Article</b></span></a></li>
                           <li class="list-group-item"><a href="#"  onClick={this.getBlockComponent.bind(this,'AddCategory')}><i class="fa fa-book"></i> <span>Add Category</span></a></li>
                           <li class="list-group-item"><a href="#"  onClick={this.getBlockComponent.bind(this,'AddTags')}><i class="fa fa-book"></i> <span>Add Tages</span></a></li>
