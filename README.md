@@ -21,6 +21,9 @@ Url : [Api Server](https://github.com/pradeep4uhere/blogServer)
 #Demo
 [Reference](https://react.rocks/example/react-trello-board)
 
+#Component
+[Reference] (https://devarchy.com/react/topic/ui-component)
+
 #Table Tags
 CREATE TABLE `tags` (
   `id` int(11) NOT NULL,
@@ -62,7 +65,7 @@ CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `first_name` varchar(50) NOT NULL,
   `last_name` varchar(50) NOT NULL,
-  `email_address` varchar(100) NOT NULL,
+  `email_address` varchar(100) https://devarchy.com/react/topic/ui-componentNOT NULL,
   `password` varchar(225) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;ed tables

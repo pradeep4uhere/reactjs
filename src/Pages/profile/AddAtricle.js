@@ -2,6 +2,12 @@ import React from 'react';
 import $ from 'jquery';
 import axios from 'axios'
 import FadeIn from 'react-fade-in';
+
+import 'react-trumbowyg/dist/trumbowyg.min.css'
+import Trumbowyg from 'react-trumbowyg'
+
+
+
 class AddAtricle extends React.Component{
 	constructor() {
         super();
@@ -87,23 +93,49 @@ class AddAtricle extends React.Component{
     	const  displayData = this.state;
       const  displayImgData = this.state;
       const imageUrls  =this.state;
-        return(<div>
-          <div  class=" alert alert-default" style={{border: 'solid 1px #ccc'}}>
-	        <h4>Create New Post</h4>
+        return(<div className="row" style={{'font-size':'12px','marginTop':10}}>
+          <div className="col-md-12">
+          <div className="card">
+	        <div className="card-header"><b>Add Article</b></div>
+          <div className="card-body">
 					<form onSubmit={this.handleSubmit} class="form" encType="multipart/form-data">
-					<textarea id="postBox"  class="form-control" cols={70} rows={3} name="description" placeholder="Enter description Here" style={{marginBottom: "2" ,border:' none'}} onClick={this.changeBox}/>
-		      <div className="image-upload">
-          <div style={{'min-height':'200'}}>
-          </div>
-          </div>
-           <input type="file" name="fike[]" multiple  onChange={this.fileChangedHandler}/> 
-          <button type="submit" class="btn btn-success btn-sm">Post</button>
+          <div class="form-group">
+          <label>Choose Category</label>
+          <select className="form-control"><options>--Choose Category--</options></select>
+
+
+					<label>Enter Title</label>
+          <input Type="text" name="title" className="form-control"/>
+
+
+          <label>Enter Description</label>    
+
+
+          <Trumbowyg id='react-trumbowyg'/>
+          <textarea id="postBox"  class="form-control" cols={70} rows={3} name="description" placeholder="Enter description Here" style={{marginBottom: "2" ,}} onClick={this.changeBox}/>
+		      
+          <label>Enter Tags</label>       
+          <input Type="text" name="title" className="form-control"/>
+
+          <label>Enter Meta Tag</label>       
+          <input Type="text" name="metaTags" className="form-control"/>
+
+          <label>Enter Meta Keywords</label>       
+          <input Type="text" name="metaKeywords" className="form-control"/>
+
+          <label>Enter Meta Description</label>       
+          <input Type="text" name="metaDesc" className="form-control"/>
+          <br/>
+
+          <button type="submit" class=" form-control btn btn-success btn-sm">Add Now</button>
+           </div>
 					</form>
-	            </div>
+	            </div></div>
 	            <div> 
                
               	{this.displayData}
 	            </div>
+            </div>
             </div>
 
 			);
