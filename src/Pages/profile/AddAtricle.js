@@ -2,120 +2,181 @@ import React from 'react';
 import $ from 'jquery';
 import axios from 'axios'
 import FadeIn from 'react-fade-in';
-
+import SweetAlert from 'sweetalert-react';
+import 'sweetalert/dist/sweetalert.css';
 import 'react-trumbowyg/dist/trumbowyg.min.css'
 import Trumbowyg from 'react-trumbowyg'
-
-
-
+//Import Category Select Options List
+import CatListOptions from '../CatListOptions.js';
+const ReactTags = require('react-tag-autocomplete')
+const tags = [];
 class AddAtricle extends React.Component{
-	constructor() {
+constructor() {
         super();
+        this.getCategoryUrl= 'http://localhost:4209/category/getcategory';
+        this.getTagListUrl= 'http://localhost:4209/tag/gettag';
         this.state = {
-            isPost: false,
-            title : '',
+              isPost: false,
+              title : '',
+              description:'',
+              categoryId:'',
+              tags: [],
+              suggestions: []
         };
-        this.state = { pictures: [] };
+
+
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.fileChangedHandler = this.fileChangedHandler.bind(this);
-        this.prependData = this.prependData.bind(this);
-        this.uploadHandler = this.uploadHandler.bind(this);
-        this.state = {selectedFile: null};
-
-        
+        this.changeTitle = this.changeTitle.bind(this);
+        this.changeDesc = this.changeDesc.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
+        this.handleAddition = this.handleAddition.bind(this);
     }
 
 
-    uploadHandler(){
-      const formData = new FormData()
-      formData.append('myFile', this.state.selectedFile, this.state.selectedFile.name)
-      const urlStr = 'http://localhost:4209/serverport/uploadimage';
-      axios.post(urlStr, formData, {
-        onUploadProgress: progressEvent => {
-          console.log(progressEvent.loaded / progressEvent.total)
-        }
-      })
+    handleDelete (i) {
+      const tags = this.state.tags.slice(0)
+      tags.splice(i, 1)
+      this.setState({ tags })
+    }
+ 
+    handleAddition (tag) {
+      const tags = [].concat(this.state.tags, tag)
+      this.setState({ tags })
     }
 
-    fileChangedHandler(event){
-      const file = event.target.files
-      console.log(process.files);
-      this.setState({selectedFile: event.target.files[0]})
-      console.log(file)
-      setTimeout(function(){
-        this.uploadHandler();
-      }.bind(this),1000); 
+
+    changeDesc(event){
+      var description = event.target.value;
+      this.setState({ description: description });
     }
-    
-    prependData() {
-      	   this.displayData.unshift(<FadeIn><div class=" alert alert-success"><p><h5><b>{this.state.title}</b></h5></p><p></p><p class="text-justify">{this.state.disc}</p><small>Post Date: {new Date().toDateString()}</small></div></FadeIn>);
-		   this.setState({
-		      showdata : this.displayData
-		   });
-		 }
+
+     changeTitle(event){
+      var title = event.target.value;
+      this.setState({ title: title });
+    }
+  
 
     handleSubmit(event){
-    	 let initialUsers = [];
+       let initialUsers = [];
        const urlStr = 'http://localhost:4209/serverport/add';
     	 event.preventDefault();
     	 const user_id =localStorage.getItem('user_id');
        const token =localStorage.getItem('token');
-       const form = new FormData()
-       form.append('token', '')
-       form.append('user_id', user_id)
-       form.append('description', event.target.description.value)
-       const options = {
-          onUploadProgress: (progressEvent) => {
-            const { loaded, total } = progressEvent;
-            // Do something with the progress details
-          },
-        };
-        axios.post(urlStr,form,options)
+       const formData = {
+            user_id : user_id,
+            token:localStorage.getItem('token'),
+            title:event.target.title.value,
+            description:event.target.description.value,
+            categoryId:event.target.categoryId.value,
+            tagInput:this.state.tags
+          }
+       axios.post(urlStr,formData)
             .then(data => {
-                    console.log(data);
-                    if(data.code==200){
+                    if(data.data.code==200){
                       setTimeout(function(){
-                        this.setState({isPost:true});
-                        this.setState({disc:form.description});
-                        this.prependData();
+                        this.setState({
+                          isPost:true,
+                          title : '',
+                          description:'',
+                          categoryId:''
+                        });
+
+                        this.setState({
+                          show:true,
+                          alertTitle:'Success',
+                          title:'',
+                          message:data.data.message
+                        });
+                        this.myFormRef.reset();
+
                       }.bind(this),1000); 
-                    }else{
-                       //Error Not Post 
                     }
             }).catch(error => console.log(error));
+      }
+
+    getTagList(){
+      const user_id =localStorage.getItem('user_id');
+      const token =localStorage.getItem('token');
+      const formData = {
+            user_id : user_id,
+            token:localStorage.getItem('token'),
+            type:'suggestions'
+          }
+      axios.post(this.getTagListUrl,formData)
+      .then(data => {
+              if(data.data.code==200){
+                this.initialCatList = data.data.result.map((values) => {
+                    return values
+                });
+               this.setState({suggestions:this.initialCatList});
+              }
+      }).catch(error => console.log(error));
 
     }
 
-    render(){
-      const { accept, files, dropzoneActive } = this.state;
-     	const disc = this.state; 
-    	const isPost = this.state; 
-    	const  displayData = this.state;
-      const  displayImgData = this.state;
-      const imageUrls  =this.state;
-        return(<div className="row" style={{'font-size':'12px','marginTop':10}}>
+
+
+
+    componentDidMount(){
+      this.getTagList(); 
+    }
+
+
+
+     render(){
+        const { accept, files, dropzoneActive } = this.state;
+        const { isPost }= this.state; 
+        const { title } = this.state; 
+        const { description } = this.state; 
+    	  const { categoryId } = this.state; 
+
+        const { message } = this.state;
+        const { alertTitle } = this.state;
+        const { suggestions } = this.state;
+
+        return(
+          <div className="row" style={{'font-size':'12px','marginTop':10}}>
           <div className="col-md-12">
+          <SweetAlert
+            show={this.state.show}
+            title={alertTitle}
+            text={message}
+            onConfirm={() => this.setState({ show: false })}
+          />
           <div className="card">
 	        <div className="card-header"><b>Add Article</b></div>
           <div className="card-body">
-					<form onSubmit={this.handleSubmit} class="form" encType="multipart/form-data">
+					<form onSubmit={this.handleSubmit} class="form" encType="multipart/form-data" ref={(el) => this.myFormRef = el}>
           <div class="form-group">
           <label>Choose Category</label>
-          <select className="form-control"><options>--Choose Category--</options></select>
-
-
+          <CatListOptions/>
+          
 					<label>Enter Title</label>
-          <input Type="text" name="title" className="form-control"/>
+          <input Type="text" name="title" className="form-control" value={title} onChange={this.changeTitle.bind(this)}/>
 
 
           <label>Enter Description</label>    
-
-
-          <Trumbowyg id='react-trumbowyg'/>
-          <textarea id="postBox"  class="form-control" cols={70} rows={3} name="description" placeholder="Enter description Here" style={{marginBottom: "2" ,}} onClick={this.changeBox}/>
+          <Trumbowyg 
+            id='description' 
+            data={description}
+            placeholder='Enter Your Description Here!!'
+            onChange={this.changeDesc.bind(this)}
+            ref="trumbowyg"
+          />
 		      
           <label>Enter Tags</label>       
-          <input Type="text" name="title" className="form-control"/>
+          <ReactTags
+            id='tagInput'
+            tags={this.state.tags}
+            suggestions={suggestions}
+            handleDelete={this.handleDelete.bind(this)}
+            handleAddition={this.handleAddition.bind(this)} 
+            placeholder='Enter Tag Text (Minimum 2 char)'
+            name='tagInput'
+            inputAttributes={{name:'tagInput'}}
+
+          />
+
 
           <label>Enter Meta Tag</label>       
           <input Type="text" name="metaTags" className="form-control"/>

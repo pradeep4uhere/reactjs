@@ -7,7 +7,6 @@ import { Redirect,withRouter } from 'react-router-dom'
 import PostList from './PostList.js';
 import axios from 'axios'
 import Loader from '../bullet-svg-animated.gif';
-import Pagination from "react-js-pagination";
 import Menu from './profile/Menu.js';
 import GuestMenu from './profile/GuestMenu.js';
 

@@ -70,7 +70,7 @@ class Login extends React.Component {
     const { message } = this.state;
     const { classstr } = this.state;
     if (redirectToReferrer) {
-        return <Redirect to='/profile' />;
+        return <Redirect to='/dashboard' />;
     }
     return (
      <div id="login">

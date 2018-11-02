@@ -10,7 +10,6 @@ import RightSideBar from './profile/RightSideBar.js';
 import { Redirect,withRouter } from 'react-router-dom'
 import axios from 'axios'
 import Loader from '../bullet-svg-animated.gif';
-import Pagination from "react-js-pagination";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
 import 'font-awesome/css/font-awesome.min.css';

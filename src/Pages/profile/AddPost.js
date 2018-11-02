@@ -2,11 +2,7 @@ import React from 'react';
 import $ from 'jquery';
 import axios from 'axios'
 import FadeIn from 'react-fade-in';
-import Dropzone from 'react-dropzone';
-import Image from 'react-render-image';
-import {canvasToBlob as blob}  from 'blob-util'
 import request from "superagent";
-import FileUploadProgress  from 'react-fileupload-progress';
 
 class AddPost extends React.Component{
 	constructor() {
@@ -129,13 +125,7 @@ class AddPost extends React.Component{
             </div>
           </div>
           
-          <Dropzone inputProps={{size: '30', required: "true"}} name="building_photo_1" style={{'border-top': 'solid 1px #ccc','min-height':'150'}}
-          accept={accept}
-          name="filename"
-          onDrop={this.onDrop.bind(this)}
-          >
-          <img src="http://goo.gl/pB9rpQ"/>
-          </Dropzone>
+         
           </div>
           <button type="submit" class="btn btn-success btn-sm">Post</button>
 					</form>
