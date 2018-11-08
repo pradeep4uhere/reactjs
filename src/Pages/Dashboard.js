@@ -30,10 +30,9 @@ class Dashboard extends React.Component {
     if (!isLoggedIn) {
         return <Redirect to='/login' />;
     }
-    return (
-            <div class="container" style={{'width':'100'}}>
-                    <LeftMenu/>
-             </div>
+    return (<div>
+                <LeftMenu/>
+            </div>
         )
     }
 }

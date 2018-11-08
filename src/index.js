@@ -28,7 +28,7 @@ const DashboardPage = () => <div><Dashboard/></div>
 
 
 const BaseLayout = () => (
-<div>
+<div style={{width:'100%'}}>
 	<Route path="/logout" component={LogoutPage} />
 	<Navigation />
     <Route path="/" exact component={HomePage} />

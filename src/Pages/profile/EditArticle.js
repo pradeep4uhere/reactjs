@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect,withRouter } from 'react-router-dom'
 import $ from 'jquery';
 import axios from 'axios'
 import FadeIn from 'react-fade-in';
@@ -9,19 +10,25 @@ import Trumbowyg from 'react-trumbowyg'
 //Import Category Select Options List
 import CatListOptions from '../CatListOptions.js';
 const ReactTags = require('react-tag-autocomplete')
-const tags = [];
-class AddAtricle extends React.Component{
-constructor() {
-        super();
+const defaultProps = {update: true};
+class EditAtricle extends React.Component{
+constructor(props) {
+        super(props);
         this.getCategoryUrl= 'http://localhost:4209/category/getcategory';
         this.getTagListUrl= 'http://localhost:4209/tag/gettag';
+        this.getArticlebyId= 'http://localhost:4209/article/getarticlebyid';
+        this.props.post.tags = JSON.parse(this.props.post.tags);
         this.state = {
               isPost: false,
-              title : '',
-              description:'',
-              categoryId:'',
-              tags: [],
-              suggestions: []
+              heading:'Add New Article',
+              id:this.props.post.id,
+              tags:this.props.post.tags,
+              title:this.props.post.title,
+              description:this.props.post.description,
+              category_id:this.props.post.category_id,
+              categoryName:this.props.post.categoryName,             
+              status:this.props.post.status,
+              redirectToReferrer:false
         };
 
 
@@ -30,8 +37,35 @@ constructor() {
         this.changeDesc = this.changeDesc.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.handleAddition = this.handleAddition.bind(this);
+        this.getArticleDetails = this.getArticleDetails.bind(this);
+        this.updateList = this.updateList.bind(this);
+        //this.getArticleDetails(this.props.post.id);
     }
 
+    updateList(){
+      this.props.onClick('44');
+    }
+
+    getArticleDetails(id){
+      this.setState({ open: true });
+      this.setState({ id: id });
+      var id =id;
+      const token =localStorage.getItem('token');
+      const formData = {
+                id : id,
+                token:localStorage.getItem('token')
+        }
+        axios.post(this.getArticlebyId,formData)
+        .then(data => {
+                if(data.data.code==200){
+                   var resultData = data.data.result[0];
+                   this.setState({category_id:resultData.category_id });
+                   this.setState({title:resultData.title });
+                   this.setState({description:resultData.description });
+                   this.setState({tags:resultData.tags});
+                }
+       }).catch(error => console.log(error));
+    }
 
     handleDelete (i) {
       const tags = this.state.tags.slice(0)
@@ -58,16 +92,18 @@ constructor() {
 
     handleSubmit(event){
        let initialUsers = [];
-       const urlStr = 'http://localhost:4209/serverport/add';
+       const urlStr = 'http://localhost:4209/article/update';
     	 event.preventDefault();
     	 const user_id =localStorage.getItem('user_id');
        const token =localStorage.getItem('token');
        const formData = {
             user_id : user_id,
             token:localStorage.getItem('token'),
+            id:event.target.id.value,
             title:event.target.title.value,
             description:event.target.description.value,
             categoryId:event.target.categoryId.value,
+            status:event.target.active.value,
             tagInput:this.state.tags
           }
        axios.post(urlStr,formData)
@@ -82,14 +118,17 @@ constructor() {
                         });
 
                         this.setState({
-                          show:true,
+                          show:false,
                           alertTitle:'Success',
                           title:'',
                           message:data.data.message
                         });
-                        this.myFormRef.reset();
-
+                        //this.myFormRef.reset();
                       }.bind(this),1000); 
+
+                      setTimeout(function(){
+                        this.setState({redirectToReferrer:true});
+                      }.bind(this),2000);
                     }
             }).catch(error => console.log(error));
       }
@@ -108,7 +147,7 @@ constructor() {
                 this.initialCatList = data.data.result.map((values) => {
                     return values
                 });
-               this.setState({suggestions:this.initialCatList});
+                this.setState({suggestions:this.initialCatList});
               }
       }).catch(error => console.log(error));
 
@@ -118,22 +157,30 @@ constructor() {
 
 
     componentDidMount(){
-      this.getTagList(); 
+      //this.getTagList(); 
     }
 
 
 
      render(){
-        const { accept, files, dropzoneActive } = this.state;
+      console.log(this.props.isPost);
         const { isPost }= this.state; 
-        const { title } = this.state; 
+
+        const { title }= this.state; 
+        const { id } = this.state;
         const { description } = this.state; 
-    	  const { categoryId } = this.state; 
+    	  const { category_id } = this.state; 
+        const { tags } =this.state; 
+        const { status } =this.state; 
 
         const { message } = this.state;
         const { alertTitle } = this.state;
         const { suggestions } = this.state;
-
+        const { heading } = this.state;
+        const { redirectToReferrer } = this.state;
+        if (redirectToReferrer) {
+          return <Redirect from='/dashboard#'  to='/dashboard#allarticle'/>;
+        }  
         return(
           <div className="row" style={{'font-size':'12px','marginTop':10}}>
           <div className="col-md-12">
@@ -144,12 +191,12 @@ constructor() {
             onConfirm={() => this.setState({ show: false })}
           />
           <div className="card">
-	        <div className="card-header"><b>Add Article</b></div>
+	        <div className="card-header"><b>{heading}</b></div>
           <div className="card-body">
 					<form onSubmit={this.handleSubmit} class="form" encType="multipart/form-data" ref={(el) => this.myFormRef = el}>
           <div class="form-group">
           <label>Choose Category</label>
-          <CatListOptions/>
+          <CatListOptions categoryId = {this.state}/>
           
 					<label>Enter Title</label>
           <input Type="text" name="title" className="form-control" value={title} onChange={this.changeTitle.bind(this)}/>
@@ -167,7 +214,7 @@ constructor() {
           <label>Enter Tags</label>       
           <ReactTags
             id='tagInput'
-            tags={this.state.tags}
+            tags={tags}
             suggestions={suggestions}
             handleDelete={this.handleDelete.bind(this)}
             handleAddition={this.handleAddition.bind(this)} 
@@ -176,32 +223,23 @@ constructor() {
             inputAttributes={{name:'tagInput'}}
 
           />
-
-
-          <label>Enter Meta Tag</label>       
-          <input Type="text" name="metaTags" className="form-control"/>
-
-          <label>Enter Meta Keywords</label>       
-          <input Type="text" name="metaKeywords" className="form-control"/>
-
-          <label>Enter Meta Description</label>       
-          <input Type="text" name="metaDesc" className="form-control"/>
+          <label>Status</label>
+          <select name="active" className="form-control">
+            <option value={1} selected={1 == status}>Active</option>
+            <option value={0} selected={0 == status}>InActive</option>
+          </select>
           <br/>
-
-          <button type="submit" class=" form-control btn btn-success btn-sm">Add Now</button>
+          <input type="hidden" name="id"  value={id}/>
+          <button type="submit" class=" form-control btn btn-success btn-sm">Save</button>
            </div>
 					</form>
-	            </div></div>
-	            <div> 
-               
-              	{this.displayData}
-	            </div>
-            </div>
-            </div>
+	        </div>
+          </div>
+          </div>
+          </div>
 
 			);
 
     }
 }
-
-export default AddAtricle;
+export default EditAtricle;

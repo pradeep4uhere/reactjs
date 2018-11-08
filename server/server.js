@@ -23,6 +23,7 @@ app.use(cookieSession({
 const PORT = 4209;
 const cors = require('cors');
 const ServerPortRouter = require('./routes/ServerPortRouter');
+const ArticleRouter = require('./routes/ArticleRouter');
 const CategoryRouter = require('./routes/CategoryRouter');
 const SubCategoryRouter = require('./routes/SubCategoryRouter');
 const TagRouter = require('./routes/TagRouter');
@@ -33,6 +34,7 @@ app.use(bodyParser.json());
 /**************All Router List Here****************************/
 
 app.use('/serverport', ServerPortRouter);
+app.use('/article', ArticleRouter);
 app.use('/category', CategoryRouter);
 app.use('/subcategory', SubCategoryRouter);
 app.use('/tag', TagRouter);

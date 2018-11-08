@@ -9,8 +9,8 @@ import axios from 'axios'
 import Select from 'react-select';
 
 class CatListOptions extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         let  initialCatList = [];
         this.getCategoryUrl= 'http://localhost:4209/category/getcategoryoptions';
         this.state = {
@@ -18,7 +18,10 @@ class CatListOptions extends React.Component {
               isShow: false,
               optionItems:null,
               options:[],
-              selectedOption: null,
+              selectedOption: {
+                          value:this.props.categoryId.category_id,
+                          label:this.props.categoryId.categoryName
+                        }
         };
     }
 

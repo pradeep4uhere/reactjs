@@ -72,7 +72,7 @@ TagRouter.route('/gettag').post(function (req, res) {
           return;
         }   
         //Database Connected Now
-        console.log('You are now connected... id ' + connection.threadId);
+        console.log('You are now connected... id' + connection.threadId);
         if(type!=''){
           var sql = "SELECT c.id as id, c.title as name from tags c order by c.id DESC";
         }else{
