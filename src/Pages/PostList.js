@@ -8,6 +8,8 @@ class PostList extends React.Component {
     render () {
         let isLoading = false;
         let listArr = this.props.state.postList;
+        console.log("Post List==="+this.props.state.postList);
+
         let optionItems = listArr.map((val) =><div>
                 
                 <div class=" alert alert-info">

@@ -16,6 +16,7 @@ import AddCategory from './AddCategory.js';
 import AddSubCategory from './AddSubCategory.js';
 import AddTags from './AddTag.js';
 import Blank from './Blank.js';
+import AddBlock from './AddBlock.js';
 const queryString = require('query-string');
 class LeftMenu extends React.Component{
   constructor() {
@@ -40,8 +41,20 @@ class LeftMenu extends React.Component{
 
   getBlockComponent (block) {
      switch (block) {
+      case '#addblock': 
+            this.setState({
+              addBlock:true,
+              addAtricle:false,
+              addCategory : false,
+              addTags     : false,
+              addSubCategory : false,
+              allArticle:false,
+              blank:false
+            });
+            break;
       case 'AddAtricle': 
             this.setState({
+              addBlock:false,
               addAtricle:true,
               addCategory : false,
               addTags     : false,
@@ -52,6 +65,7 @@ class LeftMenu extends React.Component{
             break;
       case '#allarticle': 
             this.setState({
+            	addBlock:false,
                 addAtricle:false,
                 allArticle:true,
                 addCategory : false,
@@ -63,6 +77,7 @@ class LeftMenu extends React.Component{
             break;
       case 'AddCategory': 
             this.setState({
+              addBlock:false,
               addAtricle:false,
               allArticle:false,
               addCategory : true,
@@ -74,6 +89,7 @@ class LeftMenu extends React.Component{
             break;
       case 'AddSubCategory': 
             this.setState({
+              addBlock:false,
               addAtricle:false,
               allArticle:false,
               addCategory : false,
@@ -85,6 +101,7 @@ class LeftMenu extends React.Component{
             break;
       case 'AddTags': 
             this.setState({
+              addBlock:false,
               addAtricle:false,
               allArticle:false,
               addCategory : false,
@@ -106,6 +123,7 @@ class LeftMenu extends React.Component{
 
   
   render(){
+      const { addBlock } = this.state;
       const { addAtricle } = this.state;
       const { allArticle } = this.state;
       const { addCategory } = this.state;
@@ -123,7 +141,7 @@ class LeftMenu extends React.Component{
                           <li class="list-group-item"><a href="#addcategory"  onClick={this.getBlockComponent.bind(this,'AddCategory')}><i class="fa fa-book"></i> <span>Add Category</span></a></li>
                           <li class="list-group-item"><a href="#addsubcategory"  onClick={this.getBlockComponent.bind(this,'AddSubCategory')}><i class="fa fa-book"></i> <span>Add Sub Category</span></a></li>
                           <li class="list-group-item"><a href="#addtags"  onClick={this.getBlockComponent.bind(this,'AddTags')}><i class="fa fa-book"></i> <span>Add Tages</span></a></li>
-                          <li class="list-group-item"><a href="#"><i class="fa fa-question-circle"></i> <span>Link-1</span></a></li>
+                          <li class="list-group-item"><a href="#addblock" onClick={this.getBlockComponent.bind(this,'#allblock')}><i class="fa fa-question-circle"></i> <span>Add Front Block</span></a></li>
                           <li class="list-group-item"><a href="#"><i class="fa fa-arrow-circle-o-left"></i> <span>Link-2</span></a></li>
                           <li class="list-group-item"><a href="#"><i class="fa fa-book"></i> <span>Link-3</span></a></li>
                           <li class="list-group-item"><a href="#"><i class="fa fa-compass"></i> <span>Link-4</span></a></li>
@@ -131,6 +149,7 @@ class LeftMenu extends React.Component{
                      </div>
                    </div>
                    <div class="col-md-10">
+                    {addBlock?(<AddBlock/>):(null)}
                     {addAtricle?(<AddAtricle/>):(null)}
                     {allArticle?(<AllArticle/>):(null)}
                     {addCategory?(<AddCategory/>):(null)}

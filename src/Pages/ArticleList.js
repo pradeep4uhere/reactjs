@@ -41,6 +41,7 @@ class PostList extends React.Component {
         const { id } = this.state;
         let isLoading = false;
         let listArr = this.props.state.postList;
+        console.log("Post List==="+this.props.state.postList);
         let optionItems = listArr.map((val,i) =><div className="row" style={{'border-bottom':'solid 1px #ccc','padding':'5','font-size':'13px'}}>
                     <div className="col-md-1" id="row{val.id}">{i+1}</div>
                     <div className="col-md-4" id="rows{val.id}" style={{'padding':5}}>{val.title}</div>

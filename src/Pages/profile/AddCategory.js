@@ -218,9 +218,10 @@ class AddCategory extends React.Component{
         	<div className="card-header">
         	<div class="row" style={{'font-size':'12px'}}>
         		<div className="col-md-1">#</div>
+        		<div className="col-md-2">Cat Id</div>
         		<div className="col-md-4">Name</div>
         		<div className="col-md-2">Status</div>
-        		<div className="col-md-4 pull-right">Action</div>
+        		<div className="col-md-3 pull-right">Action</div>
         	</div>
         	</div>
         	{(loading==false)?(<FadeIn><CatList onClick={this.updateCategory} state={this.state}/></FadeIn>):(<center><img src={Loader}/></center>)}

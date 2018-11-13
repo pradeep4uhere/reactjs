@@ -1,16 +1,23 @@
 import React from 'react';
 import Img1 from '../bell/img/porf-1.jpg';
 import PostItem from '../components/postItem';
+import PostItemList from '../components/postItemList';
 import Post4Item from '../components/post4Item';
 import SideItem from '../components/SideItem';
+import $ from 'jquery';
+import axios from 'axios'
+import Loader from '../bullet-svg-animated.gif';
+import FadeIn from 'react-fade-in';
 class Home extends React.Component {
   constructor() {
         super();
         this.state={
-            col:null
         }
   }
+
+
   render() {
+    const { postList }= this.props;
     return (
     <div>
     <div class="col">
@@ -19,13 +26,15 @@ class Home extends React.Component {
       <div class="col-md-8">
       <div class="default"><b>Top Headlines</b></div>
         <hr/>
-        <PostItem coloum="col-md-12"/>
+        <PostItem type="100"/>
       </div>
 
       <div class="col-md-4">
         <div class="default"><b>Popular News</b></div>
         <hr/>
-        <PostItem coloum="col-md-4"/>
+        <div style={{'max-height':'750px','overflow':'auto'}}>
+        <PostItemList type="98"/>
+        </div>
       </div>
     </div>
     <hr style={{'border':'thin dashed'}}/>

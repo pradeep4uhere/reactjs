@@ -15,14 +15,13 @@ class App extends Component {
     return (
       <div style={{width:'100%'}}>	
         <Home />
-        <Hero />
-        <About />
-        <Parallax />
-        <Features />
-        <Call />
-        <Portfolio />
-        <Team />
-        
+        {/*<Hero />*/}
+        {/*<About />*/}
+        {/*<Parallax />*/}
+        {/*<Features />*/}
+        {/*<Call />*/}
+        {/*<Portfolio />*/}
+        {/*<Team />*/}
       </div>
     );
   }

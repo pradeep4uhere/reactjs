@@ -242,8 +242,44 @@ ArticleRouter.route('/register').post(function (req, res) {
         return;     
     });
   });
-
-
-
 });
+
+
+
+ArticleRouter.route('/getpostforfront').post(function (req, res) {
+    console.log('dsadsadsa');
+    var category_id      = req.body.category_id;
+    var user_id      = req.body.user_id;
+    var token       = req.body.token;
+    if(sha1(config.salt_1 + user_id)==token){
+      db.connection.getConnection(function(err,connection){
+          //Database Not Connected If there is any error  
+          if (err) {
+            console.log("Database is not connected");
+            res.json({"code" : 100, "status" : "Error in connection database"});
+            return;
+          }   
+          //Database Connected Now
+          console.log('You are now connected... id ' + connection.threadId);
+          var sql = "SELECT u.first_name,u.last_name,p.*,c.id as category_id, c.title as categoryName from posts p JOIN users u on p.user_id=u.id  LEFT JOIN category c on c.id=p.category_id where category_id="+category_id+" order by p.id DESC";
+            connection.query(sql,function(error, rows,fields) {
+                if (error) throw res.json(error)
+                  numRows = rows.length;
+                  if(numRows==0){
+                    return res.json({status:'error',message:'!! No Records Found !!',code:'500',token:token});
+                  }else{
+                    return res.json({status:'success',message:'User Logged Successfully',code:'200',result:rows,token:token});
+                }
+              })
+            //Any Server Side Issues
+            connection.on('error', function(err) {      
+                res.json({"code" : 100, "status" : "Error in connection database"});
+                return;     
+              });
+        });
+    }else{
+      res.json({"status":"error","code" : 500, "message" : "Invalid Token Request"});
+    }
+  });
+
 module.exports = ArticleRouter;

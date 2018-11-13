@@ -27,6 +27,7 @@ const ArticleRouter = require('./routes/ArticleRouter');
 const CategoryRouter = require('./routes/CategoryRouter');
 const SubCategoryRouter = require('./routes/SubCategoryRouter');
 const TagRouter = require('./routes/TagRouter');
+const BlockRouter = require('./routes/BlockRouter');
 app.use(cors());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
@@ -38,6 +39,7 @@ app.use('/article', ArticleRouter);
 app.use('/category', CategoryRouter);
 app.use('/subcategory', SubCategoryRouter);
 app.use('/tag', TagRouter);
+app.use('/block', BlockRouter);
 
 /**************All Router List Here****************************/
 
