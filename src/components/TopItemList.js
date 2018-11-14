@@ -8,7 +8,7 @@ import stripHtml from "string-strip-html";
 import TextTruncate from 'react-text-truncate'; // recommend
 
 
-class PostItemList extends React.Component {
+class TopItemList extends React.Component {
   constructor(props) {
         super(props);
         this.getArticleUrl= 'http://localhost:4209/article/getpostforfront';
@@ -70,16 +70,10 @@ class PostItemList extends React.Component {
     let listArr = this.state.postList;
     let optionItems = this.state.postList.map((val,i) =><div><p><a href="#"><img alt="" src={this.getImage(val)} style={{'width':'100%','maxHeight':'250px'}}/></a></p>
                <div><p><a href="#"><b>{val.title}</b></a><br/><small>Nov 06, 2018, 03:29 PM IST</small></p><p>
-               <TextTruncate
-                  line={3}
-                  truncateText="…"
-                  text={stripHtml(val.description)}
-                  textTruncateChild={<a href="#">Read on</a>}
-               />
                </p></div><hr/></div>);
     return (<div>
         {(loading==false)?(<div>{optionItems}</div>):(<div className="{col}"><center><img alt="" src={Loader}/></center></div>)}
     </div>)
   }
 }
-export default PostItemList;
+export default TopItemList;

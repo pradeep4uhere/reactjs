@@ -69,6 +69,7 @@
     "react-select": "^2.1.1",
     "react-sortable-tree": "^2.3.0",
     "react-tag-autocomplete": "^5.7.0",
+    "react-text-truncate": "^0.13.1",
     "react-trello": "^2.0.3",
     "react-trumbowyg": "^1.1.0",
     "redux-react-session": "^2.5.0",

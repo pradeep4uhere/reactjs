@@ -2,12 +2,15 @@ import React from 'react';
 import Img1 from '../bell/img/porf-1.jpg';
 import PostItem from '../components/postItem';
 import PostItemList from '../components/postItemList';
-import Post4Item from '../components/post4Item';
+import TitleItemList from '../components/TitleItemList';
 import SideItem from '../components/SideItem';
+import TopItemList from '../components/TopItemList';
 import $ from 'jquery';
 import axios from 'axios'
 import Loader from '../bullet-svg-animated.gif';
 import FadeIn from 'react-fade-in';
+import TextTruncate from 'react-text-truncate'; // recommend
+
 class Home extends React.Component {
   constructor() {
         super();
@@ -33,7 +36,7 @@ class Home extends React.Component {
         <div class="default"><b>Popular News</b></div>
         <hr/>
         <div style={{'max-height':'750px','overflow':'auto'}}>
-        <PostItemList type="98"/>
+        <PostItemList type="101"/>
         </div>
       </div>
     </div>
@@ -43,28 +46,31 @@ class Home extends React.Component {
 
 
       <div class="col-md-5">
-        <div class="default"><b>Local News</b></div>
+        <div class="default"><b>Movies</b></div>
         <hr/>
         <div class="row">
           <div className="col-md-6">
-            <Post4Item/>
+            <PostItemList type="97"/>
           </div>
           <div className="col-md-6">
-            <Post4Item/>
+            <PostItemList type="88"/>
           </div>
       </div>
 
+
       </div>
+
+      
 
       <div class="col-md-5">
         <div class="default"><b>Business News</b></div>
         <hr/>
         <div class="row">
           <div className="col-md-6">
-            <Post4Item/>
+            <PostItemList type="101"/>
           </div>
           <div className="col-md-6">
-            <Post4Item/>
+            <PostItemList type="101"/>
           </div>
       </div>
 
@@ -100,37 +106,23 @@ class Home extends React.Component {
         <hr/>
         <div class="row">
           <div className="col-md-12">
-            <ul class="list-group">
-          <li class="list-group-item"><a href="#">Title Goes Here reat way to ensure that your </a></li>
-          <li class="list-group-item"><a href="#">Title Goes Here reat way to ensure that your </a></li>
-          <li class="list-group-item"><a href="#">Title Goes Here reat way to ensure that your </a></li>
-          <li class="list-group-item"><a href="#">Title Goes Here reat way to ensure that your </a></li>
-          <li class="list-group-item"><a href="#">Title Goes Here reat way to ensure that your </a></li>
-          <li class="list-group-item"><a href="#">Title Goes Here reat way to ensure that your </a></li>
-          <li class="list-group-item"><a href="#">Title Goes Here reat way to ensure that your </a></li>
-          <li class="list-group-item"><a href="#">Title Goes Here reat way to ensure that your </a></li>
-          <li class="list-group-item"><a href="#">Title Goes Here reat way to ensure that your </a></li>
-          <li class="list-group-item"><a href="#">Title Goes Here reat way to ensure that your </a></li>
-          <li class="list-group-item"><a href="#">Title Goes Here reat way to ensure that your </a></li>
-          <li class="list-group-item"><a href="#">Title Goes Here reat way to ensure that your </a></li>
-          <li class="list-group-item"><a href="#">Title Goes Here reat way to ensure that your </a></li>
-          <li class="list-group-item"><a href="#">Title Goes Here reat way to ensure that your </a></li>
-        </ul>
+            <TextTruncate
+              line={1}
+              truncateText="…"
+              text=<TitleItemList type="98"/>
+              />
           </div>
-          
       </div>
-
       </div>
-
       <div class="col-md-5">
         <div class="default"><b>Business News</b></div>
         <hr/>
         <div class="row">
           <div className="col-md-6">
-            <Post4Item/>
+            <PostItemList type="101"/>
           </div>
           <div className="col-md-6">
-            <Post4Item/>
+            <PostItemList type="101"/>
           </div>
       </div>
 
@@ -139,14 +131,8 @@ class Home extends React.Component {
       <div class="col-md-2">
          <div class="default"><b>Popular Category</b></div>
          <hr/>
-         <div className="col-md-12">
-            <SideItem/>
-            <hr/>
-            <SideItem/>
-            <hr/>
-            <SideItem/>
-            <hr/>
-            <SideItem/>
+         <div className="col-md-12" style={{'fontSize':'9px'}}>
+            <TopItemList type="101"/>
           </div>
       </div>
     </div>
