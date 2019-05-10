@@ -5,6 +5,7 @@ import PostItemList from '../components/postItemList';
 import TitleItemList from '../components/TitleItemList';
 import SideItem from '../components/SideItem';
 import TopItemList from '../components/TopItemList';
+import CategoryList from '../components/CategoryList';
 import $ from 'jquery';
 import axios from 'axios'
 import Loader from '../bullet-svg-animated.gif';
@@ -22,8 +23,8 @@ class Home extends React.Component {
   render() {
     const { postList }= this.props;
     return (
-    <div>
-    <div class="col">
+    <div style={{'fontSize':'12px'}}>
+    <div class="col-md-12">
     <br/>
     <div class="row">
       <div class="col-md-8">
@@ -77,24 +78,9 @@ class Home extends React.Component {
       </div>
 
       <div class="col-md-2">
-         <div class="default"><b>Popular Category</b></div>
+         <div class="default"><b>Popular Post</b></div>
          <hr/>
-         <ul class="list-group">
-          <li class="list-group-item">Category-1</li>
-          <li class="list-group-item">Category-1</li>
-          <li class="list-group-item">Category-1</li>
-          <li class="list-group-item">Category-1</li>
-          <li class="list-group-item">Category-1</li>
-          <li class="list-group-item">Category-1</li>
-          <li class="list-group-item">Category-1</li>
-          <li class="list-group-item">Category-1</li>
-          <li class="list-group-item">Category-1</li>
-          <li class="list-group-item">Category-1</li>
-          <li class="list-group-item">Category-1</li>
-          <li class="list-group-item">Category-1</li>
-          <li class="list-group-item">Second item</li>
-          <li class="list-group-item">Third item</li>
-        </ul>
+         <TopItemList type="101"/>
       </div>
     </div>
     <hr/>
@@ -105,7 +91,7 @@ class Home extends React.Component {
         <div class="default"><b>Local News</b></div>
         <hr/>
         <div class="row">
-          <div className="col-md-12">
+          <div className="col-md-12" style={{'fontSize':'12px'}}>
             <TextTruncate
               line={1}
               truncateText="…"
@@ -131,8 +117,9 @@ class Home extends React.Component {
       <div class="col-md-2">
          <div class="default"><b>Popular Category</b></div>
          <hr/>
-         <div className="col-md-12" style={{'fontSize':'9px'}}>
-            <TopItemList type="101"/>
+         <div className="col-md-12" style={{'fontSize':'12px'}}>
+            <CategoryList/>
+            
           </div>
       </div>
     </div>
